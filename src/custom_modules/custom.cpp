@@ -116,8 +116,10 @@ void create_cell_types( void )
 	// first find index for a few key variables. 
 	int apoptosis_model_index = cell_defaults.phenotype.death.find_death_model_index( "Apoptosis" );
 	int necrosis_model_index = cell_defaults.phenotype.death.find_death_model_index( "Necrosis" );
-	static int chemical1_substrate_index = microenvironment.find_density_index( "chemical1" );
-	int chemical2_substrate_index = microenvironment.find_density_index( "chemical2" ); 
+    
+    
+	static int chemical1_substrate_index = microenvironment.find_density_index( "uptaken" );
+	static int chemical2_substrate_index = microenvironment.find_density_index( "secreted" ); 
 
 	int start_index = live.find_phase_index( PhysiCell_constants::live );
 	int end_index = live.find_phase_index( PhysiCell_constants::live );
@@ -128,17 +130,20 @@ void create_cell_types( void )
 
 
 	// set oxygen uptake / secretion parameters for the default cell type 
-	cell_defaults.phenotype.secretion.uptake_rates[chemical1_substrate_index] = parameters.doubles( "chemical1_uptake_rate_coefficient" ); 
-	cell_defaults.phenotype.secretion.secretion_rates[chemical1_substrate_index] = parameters.doubles( "chemical1_secretion_rate_coefficient" ); 
-	cell_defaults.phenotype.secretion.saturation_densities[chemical1_substrate_index] = parameters.doubles( "chemical1_saturation_density" ); 
-	std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!" << cell_defaults.phenotype.molecular.internalized_total_substrates << std::endl; //= 2.0; // parameters.doubles( "internal_chemical1" );	
-	system("pause"); 
+	cell_defaults.phenotype.secretion.uptake_rates[chemical1_substrate_index] = parameters.doubles( "uptaken_uptake_rate_coefficient" ); 
+	cell_defaults.phenotype.secretion.secretion_rates[chemical1_substrate_index] = parameters.doubles( "uptaken_secretion_rate_coefficient" ); 
+	cell_defaults.phenotype.secretion.saturation_densities[chemical1_substrate_index] = parameters.doubles( "uptaken_saturation_density" ); 
+	// std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!" << cell_defaults.phenotype.molecular.internalized_total_substrates << std::endl; //= 2.0; // parameters.doubles( "internal_chemical1" );	
+	// system("pause"); 
 	
-	cell_defaults.phenotype.secretion.uptake_rates[chemical2_substrate_index] = parameters.doubles( "chemical2_uptake_rate_coefficient" ); 
-	cell_defaults.phenotype.secretion.secretion_rates[chemical2_substrate_index] = parameters.doubles( "chemical2_secretion_rate_coefficient" ); 
-	cell_defaults.phenotype.secretion.saturation_densities[chemical2_substrate_index] = parameters.doubles( "chemical2_saturation_density" );
-	//cell_defaults.phenotype.molecular.internalized_total_substrates[chemical2_substrate_index] = parameters.doubles( "internal_chemical2" );
-	
+	cell_defaults.phenotype.secretion.uptake_rates[chemical2_substrate_index] = parameters.doubles( "secreted_uptake_rate_coefficient" ); 
+	cell_defaults.phenotype.secretion.secretion_rates[chemical2_substrate_index] = parameters.doubles( "secreted_secretion_rate_coefficient" ); 
+	cell_defaults.phenotype.secretion.saturation_densities[chemical2_substrate_index] = parameters.doubles( "secreted_saturation_density" );
+	// cell_defaults.phenotype.molecular.internalized_total_substrates[chemical2_substrate_index] = parameters.doubles( "internal_chemical2" );
+    // std::cout << cell_defaults.phenotype.molecular.internalized_total_substrates[chemical2_substrate_index] << std::endl;
+    
+    
+    
 	// add custom data here, if any 
 	
 
@@ -158,10 +163,10 @@ void create_cell_types( void )
 	
 	// enable random motility 
 	secretion_cell.phenotype.motility.is_motile = false; 
-	
-	// Set cell-cell adhesion to 5% of other cells 
+
+    // Set cell-cell adhesion to 5% of other cells 
 	secretion_cell.phenotype.mechanics.cell_cell_adhesion_strength *= parameters.doubles( "secretion_cell_relative_adhesion" ); // 0.05; 
-	
+
 	return; 
 }
 
@@ -187,31 +192,29 @@ void setup_tissue( void )
 	
 	Cell* pC;
 
+	static int chemical1_substrate_index = microenvironment.find_density_index( "uptaken" );
+	static int chemical2_substrate_index = microenvironment.find_density_index( "secreted" ); 
+
 	pC = create_cell(); 
 	pC->assign_position( 0.0, 0.0, 0.0 );
 	
+    pC->phenotype.molecular.internalized_total_substrates[chemical1_substrate_index] = parameters.doubles( "internal_uptaken" );
+    pC->phenotype.molecular.internalized_total_substrates[chemical2_substrate_index] = parameters.doubles( "internal_secreted" );
 	
 	return; 
 }
 
 std::vector<std::string> my_coloring_function( Cell* pCell )
 {
-	// start with flow cytometry coloring 
-/* 	pugi::xml_node node;
-	bool internalization_bool = xml_get_bool_value( node, "track_internalized_substrates_in_each_agent" ); 
-	std::vector<std::string> output = false_cell_coloring_cytometry(pCell); 
-	std::cout<<internalization_bool<<std::endl; */
-	
-	
+
 	std::vector<std::string> output = false_cell_coloring_cytometry(pCell);
-	double internalization_bool = parameters.doubles( "internalization_color" );
-	std::cout<<internalization_bool<<std::endl;
+	double internalization_flag = parameters.doubles( "internalization_color" );
 	
 	//bookkeeping
-	int chemical1_substrate_index = microenvironment.find_density_index( "chemical1" );
-	int chemical2_substrate_index = microenvironment.find_density_index( "chemical2" );
+	int chemical1_substrate_index = microenvironment.find_density_index( "uptaken" );
+	int chemical2_substrate_index = microenvironment.find_density_index( "secreted" );
 	
-	if (internalization_bool == 0)
+	if (internalization_flag == 0)
     {	
 	if( pCell->phenotype.death.dead == false && pCell->type == 0 )
 	{
@@ -220,39 +223,48 @@ std::vector<std::string> my_coloring_function( Cell* pCell )
 	}
 	}
 	
-	
-	if (internalization_bool == 1)
-    {	
+    //Blue
+    double Ry1_1=0.0;
+    double Ry2_1=181.0;
+    double Gy1_1=17.0;
+    double Gy2_1=186.0;
+    double By1_1=255.0;
+    double By2_1=255.0;
+	double x1_1=0.0;
+    double x2_1=10.0;
+    double z1_1 = pCell->phenotype.molecular.internalized_total_substrates[chemical1_substrate_index];
+    
+    //Red
+    double Ry1_2=255.0;
+    double Ry2_2=255.0;
+    double Gy1_2=0.0;
+    double Gy2_2=159.0;
+    double By1_2=0.0;
+    double By2_2=159.0;
+	double x1_2=0.0;
+    double x2_2=10.0;
+    double z1_2 = pCell->phenotype.molecular.internalized_total_substrates[chemical2_substrate_index];
+    
+    
+	if (internalization_flag == 1)
+    {
 	if( pCell->phenotype.death.dead == false && pCell->type == 0 )
 	{
-		int c_ch1 = (int) round(255* (pCell->phenotype.molecular.internalized_total_substrates[chemical1_substrate_index]/10.0 ));
-		std::cout<<pCell->phenotype.molecular.internalized_total_substrates[chemical1_substrate_index]<<std::endl;
+        int R_ch1 = (int) 255.0-round((z1_1 - x1_1)/(x2_1 - x1_1)*(Ry2_1 - Ry1_1) - Ry1_1);
+        int G_ch1 = (int) 255.0-round((z1_1 - x1_1)/(x2_1 - x1_1)*(Gy2_1 - Gy1_1) - Gy1_1);
+        int B_ch1 = (int) 255.0-round((z1_1 - x1_1)/(x2_1 - x1_1)*(By2_1 - By1_1) - By1_1);
+		// std::cout<<pCell->phenotype.molecular.internalized_total_substrates[chemical1_substrate_index]<<std::endl;
 		char szTempString [128];
-		sprintf( szTempString , "rgb(%u,%u,%u)",0, 0, c_ch1);
+		sprintf( szTempString , "rgb(%u,%u,%u)",R_ch1, G_ch1, B_ch1);
 		output[0].assign( szTempString );
-		output[1].assign( szTempString );
-		int n_ch1 = (int) round (255 * ((pCell->phenotype.molecular.internalized_total_substrates[chemical1_substrate_index])/10.0 )); 
-		sprintf( szTempString , "rgb(%u,%u,%u)", 0 , 0 , n_ch1 );
+        int R_ch2 = (int) 255.0-round((z1_2 - x1_2)/(x2_2 - x1_2)*(Ry2_2 - Ry1_2) - Ry1_2);
+        int G_ch2 = (int) 255.0-round((z1_2 - x1_2)/(x2_2 - x1_2)*(Gy2_2 - Gy1_2) - Gy1_2);
+        int B_ch2 = (int) 255.0-round((z1_2 - x1_2)/(x2_2 - x1_2)*(By2_2 - By1_2) - By1_2);
+        //std::cout<<pCell->phenotype.molecular.internalized_total_substrates[chemical2_substrate_index]<<std::endl;
+		sprintf( szTempString , "rgb(%u,%u,%u)", R_ch2 , G_ch2 , B_ch2 );
 		output[2].assign( szTempString );
-		output[3].assign( szTempString );
 	}
 	}
-	
-	if (internalization_bool == 2)
-    {	
-	if( pCell->phenotype.death.dead == false && pCell->type == 0 )
-	{
-		int c_ch2 = (int) round(255* ((pCell->phenotype.molecular.internalized_total_substrates[chemical2_substrate_index])/10.0 )); 
-		char szTempString [128];
-		sprintf( szTempString , "rgb(%u,%u,%u)",0, 0, c_ch2);
-		output[0].assign( szTempString );
-		output[1].assign( szTempString );
-		int n_ch2 = (int) round (255 * ((pCell->phenotype.molecular.internalized_total_substrates[chemical2_substrate_index])/10.0 )); 
-		sprintf( szTempString , "rgb(%u,%u,%u)", 0 , 0 , n_ch2 );
-		output[2].assign( szTempString );
-		output[3].assign( szTempString );
-	}
-	}
-	
+
 	return output; 
 }

@@ -115,7 +115,7 @@
 	</save>
 	
 	<microenvironment_setup>
-		<variable name="chemical1" units="concentration" ID="0">
+		<variable name="uptaken" units="concentration" ID="0">
 			<physical_parameter_set>
 				<diffusion_coefficient units="micron^2/min">1000.0</diffusion_coefficient>
 				<decay_rate units="1/min">0.0</decay_rate>  
@@ -124,7 +124,7 @@
 			<Dirichlet_boundary_condition units="mmHg" enabled="false">38.0</Dirichlet_boundary_condition>
 		</variable>
 		
-		<variable name="chemical2" units="concentration" ID="1">
+		<variable name="secreted" units="concentration" ID="1">
 			<physical_parameter_set>
 				<diffusion_coefficient units="micron^2/min">1000.0</diffusion_coefficient>
 				<decay_rate units="1/min">0.0</decay_rate>  
@@ -145,26 +145,27 @@
 				<filename>./config/dirichlet.mat</filename>
 			</dirichlet_nodes>
 		</options>
-	</microenvironment_setup>	
+	</microenvironment_setup>
 	
 	<user_parameters>
-		<random_seed type="int" units="dimensionless">0</random_seed> 
+		<random_seed type="int" units="dimensionless" hidden="true">0</random_seed> 
 		<!-- example parameters from the template --> 
 		
 		
 		<!-- motile cell type parameters --> 
-		<chemical1_uptake_rate_coefficient type="double" units="1/min">0.1</chemical1_uptake_rate_coefficient>
-		<chemical1_secretion_rate_coefficient type="double" units="1/min">0.0</chemical1_secretion_rate_coefficient>
-		<chemical1_saturation_density type="double" units="1/min">10.0</chemical1_saturation_density>
-		<internal_chemical1 type="double" units="1/min">2.0</internal_chemical1>
+		<uptaken_uptake_rate_coefficient type="double" units="1/min"  description="uptake rate per min for uptaken chemical (Default = 0.0000075)">0.0000075</uptaken_uptake_rate_coefficient>
+		<uptaken_secretion_rate_coefficient type="double" units="1/min" description="secreteion rate per min for uptaken chemical (Default = 0.0)">0.0</uptaken_secretion_rate_coefficient>
+		<uptaken_saturation_density type="double" units="1/min" description="saturation density for uptaken chemical (Default = 10.0)">10.0</uptaken_saturation_density>
+		<internal_uptaken type="double" units="1/min" description="initial internalized uptaken chemical (Default = 0.0)">0.0</internal_uptaken>
 		
 		
-		<chemical2_uptake_rate_coefficient type="double" units="1/min">0.0</chemical2_uptake_rate_coefficient>
-		<chemical2_secretion_rate_coefficient type="double" units="1/min">0.5</chemical2_secretion_rate_coefficient>
-		<chemical2_saturation_density type="double" units="1/min">10.0</chemical2_saturation_density>
-		<internal_chemical2 type="double" units="1/min">10.0</internal_chemical2>
+		<secreted_uptake_rate_coefficient type="double" units="1/min" description="uptake rate per min for secreted chemical (Default = 0.0)">0.0</secreted_uptake_rate_coefficient>
+		<secreted_secretion_rate_coefficient type="double" units="1/min" description="secreteion rate per min for secreted chemical (Default = 0.0000075)">0.0000075</secreted_secretion_rate_coefficient>
+		<secreted_saturation_density type="double" units="1/min" description="saturation density for secreted chemical (Default = 10.0)">10.0</secreted_saturation_density>
+		<internal_secreted type="double" units="1/min" description="initial internalized secreted chemical (Default = 10.0)">10.0</internal_secreted>
 		
-		<internalization_color type="double" units="" description="Colorization (0->Default, 1->Chemical 1, 2->Chemical 2">1</internalization_color>
+        
+		<internalization_color type="double" units="" description="Colorization (0->Default (Red), 1->Internal Chemicals 2">0</internalization_color>
 	</user_parameters>
 	
 </PhysiCell_settings>

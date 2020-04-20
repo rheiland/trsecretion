@@ -24,142 +24,129 @@ class UserTab(object):
         widget_layout = {'width': '15%'}
         units_button_layout ={'width':'15%'}
         desc_button_layout={'width':'45%'}
+        divider_button_layout={'width':'40%'}
 
-        param_name1 = Button(description='random_seed', disabled=True, layout=name_button_layout)
-        param_name1.style.button_color = 'lightgreen'
+        param_name1 = Button(description='uptaken_uptake_rate_coefficient', disabled=True, layout=name_button_layout)
+        param_name1.style.button_color = 'tan'
 
-        self.random_seed = IntText(
-          value=0,
-          step=1,
+        self.uptaken_uptake_rate_coefficient = FloatText(
+          value=0.0000075,
+          step=1e-06,
           style=style, layout=widget_layout)
 
-        param_name2 = Button(description='chemical1_uptake_rate_coefficient', disabled=True, layout=name_button_layout)
-        param_name2.style.button_color = 'tan'
+        param_name2 = Button(description='uptaken_secretion_rate_coefficient', disabled=True, layout=name_button_layout)
+        param_name2.style.button_color = 'lightgreen'
 
-        self.chemical1_uptake_rate_coefficient = FloatText(
-          value=0.1,
-          step=0.01,
-          style=style, layout=widget_layout)
-
-        param_name3 = Button(description='chemical1_secretion_rate_coefficient', disabled=True, layout=name_button_layout)
-        param_name3.style.button_color = 'lightgreen'
-
-        self.chemical1_secretion_rate_coefficient = FloatText(
+        self.uptaken_secretion_rate_coefficient = FloatText(
           value=0.0,
           step=0.01,
           style=style, layout=widget_layout)
 
-        param_name4 = Button(description='chemical1_saturation_density', disabled=True, layout=name_button_layout)
-        param_name4.style.button_color = 'tan'
+        param_name3 = Button(description='uptaken_saturation_density', disabled=True, layout=name_button_layout)
+        param_name3.style.button_color = 'tan'
 
-        self.chemical1_saturation_density = FloatText(
+        self.uptaken_saturation_density = FloatText(
           value=10.0,
           step=1,
           style=style, layout=widget_layout)
 
-        param_name5 = Button(description='internal_chemical1', disabled=True, layout=name_button_layout)
-        param_name5.style.button_color = 'lightgreen'
+        param_name4 = Button(description='internal_uptaken', disabled=True, layout=name_button_layout)
+        param_name4.style.button_color = 'lightgreen'
 
-        self.internal_chemical1 = FloatText(
-          value=2.0,
-          step=0.1,
-          style=style, layout=widget_layout)
-
-        param_name6 = Button(description='chemical2_uptake_rate_coefficient', disabled=True, layout=name_button_layout)
-        param_name6.style.button_color = 'tan'
-
-        self.chemical2_uptake_rate_coefficient = FloatText(
+        self.internal_uptaken = FloatText(
           value=0.0,
           step=0.01,
           style=style, layout=widget_layout)
 
-        param_name7 = Button(description='chemical2_secretion_rate_coefficient', disabled=True, layout=name_button_layout)
-        param_name7.style.button_color = 'lightgreen'
+        param_name5 = Button(description='secreted_uptake_rate_coefficient', disabled=True, layout=name_button_layout)
+        param_name5.style.button_color = 'tan'
 
-        self.chemical2_secretion_rate_coefficient = FloatText(
-          value=0.5,
-          step=0.1,
+        self.secreted_uptake_rate_coefficient = FloatText(
+          value=0.0,
+          step=0.01,
           style=style, layout=widget_layout)
 
-        param_name8 = Button(description='chemical2_saturation_density', disabled=True, layout=name_button_layout)
-        param_name8.style.button_color = 'tan'
+        param_name6 = Button(description='secreted_secretion_rate_coefficient', disabled=True, layout=name_button_layout)
+        param_name6.style.button_color = 'lightgreen'
 
-        self.chemical2_saturation_density = FloatText(
+        self.secreted_secretion_rate_coefficient = FloatText(
+          value=0.0000075,
+          step=1e-06,
+          style=style, layout=widget_layout)
+
+        param_name7 = Button(description='secreted_saturation_density', disabled=True, layout=name_button_layout)
+        param_name7.style.button_color = 'tan'
+
+        self.secreted_saturation_density = FloatText(
           value=10.0,
           step=1,
           style=style, layout=widget_layout)
 
-        param_name9 = Button(description='internal_chemical2', disabled=True, layout=name_button_layout)
-        param_name9.style.button_color = 'lightgreen'
+        param_name8 = Button(description='internal_secreted', disabled=True, layout=name_button_layout)
+        param_name8.style.button_color = 'lightgreen'
 
-        self.internal_chemical2 = FloatText(
+        self.internal_secreted = FloatText(
           value=10.0,
           step=1,
           style=style, layout=widget_layout)
 
-        param_name10 = Button(description='internalization_color', disabled=True, layout=name_button_layout)
-        param_name10.style.button_color = 'tan'
+        param_name9 = Button(description='internalization_color', disabled=True, layout=name_button_layout)
+        param_name9.style.button_color = 'tan'
 
         self.internalization_color = FloatText(
-          value=1,
-          step=0.1,
+          value=0,
+          step=0.01,
           style=style, layout=widget_layout)
 
-        units_button1 = Button(description='', disabled=True, layout=units_button_layout) 
-        units_button1.style.button_color = 'lightgreen'
+        units_button1 = Button(description='1/min', disabled=True, layout=units_button_layout) 
+        units_button1.style.button_color = 'tan'
         units_button2 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button2.style.button_color = 'tan'
+        units_button2.style.button_color = 'lightgreen'
         units_button3 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button3.style.button_color = 'lightgreen'
+        units_button3.style.button_color = 'tan'
         units_button4 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button4.style.button_color = 'tan'
+        units_button4.style.button_color = 'lightgreen'
         units_button5 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button5.style.button_color = 'lightgreen'
+        units_button5.style.button_color = 'tan'
         units_button6 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button6.style.button_color = 'tan'
+        units_button6.style.button_color = 'lightgreen'
         units_button7 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button7.style.button_color = 'lightgreen'
+        units_button7.style.button_color = 'tan'
         units_button8 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button8.style.button_color = 'tan'
-        units_button9 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button9.style.button_color = 'lightgreen'
-        units_button10 = Button(description='', disabled=True, layout=units_button_layout) 
-        units_button10.style.button_color = 'tan'
+        units_button8.style.button_color = 'lightgreen'
+        units_button9 = Button(description='', disabled=True, layout=units_button_layout) 
+        units_button9.style.button_color = 'tan'
 
-        desc_button1 = Button(description='', disabled=True, layout=desc_button_layout) 
-        desc_button1.style.button_color = 'lightgreen'
-        desc_button2 = Button(description='', disabled=True, layout=desc_button_layout) 
+        desc_button2 = Button(description='uptake rate per min for uptaken chemical (Default = 0.0000075)', disabled=True, layout=desc_button_layout) 
         desc_button2.style.button_color = 'tan'
-        desc_button3 = Button(description='', disabled=True, layout=desc_button_layout) 
+        desc_button3 = Button(description='secreteion rate per min for uptaken chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
         desc_button3.style.button_color = 'lightgreen'
-        desc_button4 = Button(description='', disabled=True, layout=desc_button_layout) 
+        desc_button4 = Button(description='saturation density for uptaken chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button4.style.button_color = 'tan'
-        desc_button5 = Button(description='', disabled=True, layout=desc_button_layout) 
+        desc_button5 = Button(description='initial internalized uptaken chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
         desc_button5.style.button_color = 'lightgreen'
-        desc_button6 = Button(description='', disabled=True, layout=desc_button_layout) 
+        desc_button6 = Button(description='uptake rate per min for secreted chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
         desc_button6.style.button_color = 'tan'
-        desc_button7 = Button(description='', disabled=True, layout=desc_button_layout) 
+        desc_button7 = Button(description='secreteion rate per min for secreted chemical (Default = 0.0000075)', disabled=True, layout=desc_button_layout) 
         desc_button7.style.button_color = 'lightgreen'
-        desc_button8 = Button(description='', disabled=True, layout=desc_button_layout) 
+        desc_button8 = Button(description='saturation density for secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button8.style.button_color = 'tan'
-        desc_button9 = Button(description='', disabled=True, layout=desc_button_layout) 
+        desc_button9 = Button(description='initial internalized secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button9.style.button_color = 'lightgreen'
-        desc_button10 = Button(description='Colorization (0->Default, 1->Chemical 1, 2->Chemical 2', disabled=True, layout=desc_button_layout) 
+        desc_button10 = Button(description='Colorization (0->Default (Red), 1->Internal Chemicals 2', disabled=True, layout=desc_button_layout) 
         desc_button10.style.button_color = 'tan'
 
-        row1 = [param_name1, self.random_seed, units_button1, desc_button1] 
-        row2 = [param_name2, self.chemical1_uptake_rate_coefficient, units_button2, desc_button2] 
-        row3 = [param_name3, self.chemical1_secretion_rate_coefficient, units_button3, desc_button3] 
-        row4 = [param_name4, self.chemical1_saturation_density, units_button4, desc_button4] 
-        row5 = [param_name5, self.internal_chemical1, units_button5, desc_button5] 
-        row6 = [param_name6, self.chemical2_uptake_rate_coefficient, units_button6, desc_button6] 
-        row7 = [param_name7, self.chemical2_secretion_rate_coefficient, units_button7, desc_button7] 
-        row8 = [param_name8, self.chemical2_saturation_density, units_button8, desc_button8] 
-        row9 = [param_name9, self.internal_chemical2, units_button9, desc_button9] 
-        row10 = [param_name10, self.internalization_color, units_button10, desc_button10] 
+        row2 = [param_name1, self.uptaken_uptake_rate_coefficient, units_button1, desc_button2] 
+        row3 = [param_name2, self.uptaken_secretion_rate_coefficient, units_button2, desc_button3] 
+        row4 = [param_name3, self.uptaken_saturation_density, units_button3, desc_button4] 
+        row5 = [param_name4, self.internal_uptaken, units_button4, desc_button5] 
+        row6 = [param_name5, self.secreted_uptake_rate_coefficient, units_button5, desc_button6] 
+        row7 = [param_name6, self.secreted_secretion_rate_coefficient, units_button6, desc_button7] 
+        row8 = [param_name7, self.secreted_saturation_density, units_button7, desc_button8] 
+        row9 = [param_name8, self.internal_secreted, units_button8, desc_button9] 
+        row10 = [param_name9, self.internalization_color, units_button9, desc_button10] 
 
         box_layout = Layout(display='flex', flex_flow='row', align_items='stretch', width='100%')
-        box1 = Box(children=row1, layout=box_layout)
         box2 = Box(children=row2, layout=box_layout)
         box3 = Box(children=row3, layout=box_layout)
         box4 = Box(children=row4, layout=box_layout)
@@ -171,7 +158,6 @@ class UserTab(object):
         box10 = Box(children=row10, layout=box_layout)
 
         self.tab = VBox([
-          box1,
           box2,
           box3,
           box4,
@@ -192,15 +178,14 @@ class UserTab(object):
                 vp.append(var)
 
         uep = xml_root.find('.//user_parameters')  # find unique entry point
-        self.random_seed.value = int(uep.find('.//random_seed').text)
-        self.chemical1_uptake_rate_coefficient.value = float(uep.find('.//chemical1_uptake_rate_coefficient').text)
-        self.chemical1_secretion_rate_coefficient.value = float(uep.find('.//chemical1_secretion_rate_coefficient').text)
-        self.chemical1_saturation_density.value = float(uep.find('.//chemical1_saturation_density').text)
-        self.internal_chemical1.value = float(uep.find('.//internal_chemical1').text)
-        self.chemical2_uptake_rate_coefficient.value = float(uep.find('.//chemical2_uptake_rate_coefficient').text)
-        self.chemical2_secretion_rate_coefficient.value = float(uep.find('.//chemical2_secretion_rate_coefficient').text)
-        self.chemical2_saturation_density.value = float(uep.find('.//chemical2_saturation_density').text)
-        self.internal_chemical2.value = float(uep.find('.//internal_chemical2').text)
+        self.uptaken_uptake_rate_coefficient.value = float(uep.find('.//uptaken_uptake_rate_coefficient').text)
+        self.uptaken_secretion_rate_coefficient.value = float(uep.find('.//uptaken_secretion_rate_coefficient').text)
+        self.uptaken_saturation_density.value = float(uep.find('.//uptaken_saturation_density').text)
+        self.internal_uptaken.value = float(uep.find('.//internal_uptaken').text)
+        self.secreted_uptake_rate_coefficient.value = float(uep.find('.//secreted_uptake_rate_coefficient').text)
+        self.secreted_secretion_rate_coefficient.value = float(uep.find('.//secreted_secretion_rate_coefficient').text)
+        self.secreted_saturation_density.value = float(uep.find('.//secreted_saturation_density').text)
+        self.internal_secreted.value = float(uep.find('.//internal_secreted').text)
         self.internalization_color.value = float(uep.find('.//internalization_color').text)
 
 
@@ -213,13 +198,12 @@ class UserTab(object):
                 vp.append(var)
 
         uep = xml_root.find('.//user_parameters')  # find unique entry point
-        uep.find('.//random_seed').text = str(self.random_seed.value)
-        uep.find('.//chemical1_uptake_rate_coefficient').text = str(self.chemical1_uptake_rate_coefficient.value)
-        uep.find('.//chemical1_secretion_rate_coefficient').text = str(self.chemical1_secretion_rate_coefficient.value)
-        uep.find('.//chemical1_saturation_density').text = str(self.chemical1_saturation_density.value)
-        uep.find('.//internal_chemical1').text = str(self.internal_chemical1.value)
-        uep.find('.//chemical2_uptake_rate_coefficient').text = str(self.chemical2_uptake_rate_coefficient.value)
-        uep.find('.//chemical2_secretion_rate_coefficient').text = str(self.chemical2_secretion_rate_coefficient.value)
-        uep.find('.//chemical2_saturation_density').text = str(self.chemical2_saturation_density.value)
-        uep.find('.//internal_chemical2').text = str(self.internal_chemical2.value)
+        uep.find('.//uptaken_uptake_rate_coefficient').text = str(self.uptaken_uptake_rate_coefficient.value)
+        uep.find('.//uptaken_secretion_rate_coefficient').text = str(self.uptaken_secretion_rate_coefficient.value)
+        uep.find('.//uptaken_saturation_density').text = str(self.uptaken_saturation_density.value)
+        uep.find('.//internal_uptaken').text = str(self.internal_uptaken.value)
+        uep.find('.//secreted_uptake_rate_coefficient').text = str(self.secreted_uptake_rate_coefficient.value)
+        uep.find('.//secreted_secretion_rate_coefficient').text = str(self.secreted_secretion_rate_coefficient.value)
+        uep.find('.//secreted_saturation_density').text = str(self.secreted_saturation_density.value)
+        uep.find('.//internal_secreted').text = str(self.internal_secreted.value)
         uep.find('.//internalization_color').text = str(self.internalization_color.value)
