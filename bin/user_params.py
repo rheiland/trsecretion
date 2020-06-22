@@ -93,9 +93,8 @@ class UserTab(object):
         param_name9 = Button(description='internalization_color', disabled=True, layout=name_button_layout)
         param_name9.style.button_color = 'tan'
 
-        self.internalization_color = FloatText(
-          value=0,
-          step=0.01,
+        self.internalization_color = Checkbox(
+          value=False,
           style=style, layout=widget_layout)
 
         units_button1 = Button(description='1/min', disabled=True, layout=units_button_layout) 
@@ -117,23 +116,23 @@ class UserTab(object):
         units_button9 = Button(description='', disabled=True, layout=units_button_layout) 
         units_button9.style.button_color = 'tan'
 
-        desc_button2 = Button(description='uptake rate per min for uptaken chemical (Default = 0.0000075)', disabled=True, layout=desc_button_layout) 
+        desc_button2 = Button(description='uptake rate per min for uptaken chemical (Default = 0.0000075)' , tooltip='uptake rate per min for uptaken chemical (Default = 0.0000075)', disabled=True, layout=desc_button_layout) 
         desc_button2.style.button_color = 'tan'
-        desc_button3 = Button(description='secreteion rate per min for uptaken chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
+        desc_button3 = Button(description='secreteion rate per min for uptaken chemical (Default = 0.0)' , tooltip='secreteion rate per min for uptaken chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
         desc_button3.style.button_color = 'lightgreen'
-        desc_button4 = Button(description='saturation density for uptaken chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
+        desc_button4 = Button(description='saturation density for uptaken chemical (Default = 10.0)' , tooltip='saturation density for uptaken chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button4.style.button_color = 'tan'
-        desc_button5 = Button(description='initial internalized uptaken chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
+        desc_button5 = Button(description='initial internalized uptaken chemical (Default = 0.0)' , tooltip='initial internalized uptaken chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
         desc_button5.style.button_color = 'lightgreen'
-        desc_button6 = Button(description='uptake rate per min for secreted chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
+        desc_button6 = Button(description='uptake rate per min for secreted chemical (Default = 0.0)' , tooltip='uptake rate per min for secreted chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
         desc_button6.style.button_color = 'tan'
-        desc_button7 = Button(description='secreteion rate per min for secreted chemical (Default = 0.0000075)', disabled=True, layout=desc_button_layout) 
+        desc_button7 = Button(description='secreteion rate per min for secreted chemical (Default = 0.0000075)' , tooltip='secreteion rate per min for secreted chemical (Default = 0.0000075)', disabled=True, layout=desc_button_layout) 
         desc_button7.style.button_color = 'lightgreen'
-        desc_button8 = Button(description='saturation density for secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
+        desc_button8 = Button(description='saturation density for secreted chemical (Default = 10.0)' , tooltip='saturation density for secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button8.style.button_color = 'tan'
-        desc_button9 = Button(description='initial internalized secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
+        desc_button9 = Button(description='initial internalized secreted chemical (Default = 10.0)' , tooltip='initial internalized secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button9.style.button_color = 'lightgreen'
-        desc_button10 = Button(description='Colorization (0->Default (Red), 1->Internal Chemicals 2', disabled=True, layout=desc_button_layout) 
+        desc_button10 = Button(description='Colorization (false->Default (Red), true->Internal Chemicals 2' , tooltip='Colorization (false->Default (Red), true->Internal Chemicals 2', disabled=True, layout=desc_button_layout) 
         desc_button10.style.button_color = 'tan'
 
         row2 = [param_name1, self.uptaken_uptake_rate_coefficient, units_button1, desc_button2] 
@@ -186,7 +185,7 @@ class UserTab(object):
         self.secreted_secretion_rate_coefficient.value = float(uep.find('.//secreted_secretion_rate_coefficient').text)
         self.secreted_saturation_density.value = float(uep.find('.//secreted_saturation_density').text)
         self.internal_secreted.value = float(uep.find('.//internal_secreted').text)
-        self.internalization_color.value = float(uep.find('.//internalization_color').text)
+        self.internalization_color.value = ('true' == (uep.find('.//internalization_color').text.lower()) )
 
 
     # Read values from the GUI widgets to enable editing XML

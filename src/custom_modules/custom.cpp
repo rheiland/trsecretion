@@ -208,13 +208,13 @@ std::vector<std::string> my_coloring_function( Cell* pCell )
 {
 
 	std::vector<std::string> output = false_cell_coloring_cytometry(pCell);
-	double internalization_flag = parameters.doubles( "internalization_color" );
+	double internalization_flag = parameters.bools( "internalization_color" );
 	
 	//bookkeeping
 	int chemical1_substrate_index = microenvironment.find_density_index( "uptaken" );
 	int chemical2_substrate_index = microenvironment.find_density_index( "secreted" );
 	
-	if (internalization_flag == 0)
+	if (internalization_flag == false)
     {	
 	if( pCell->phenotype.death.dead == false && pCell->type == 0 )
 	{
@@ -246,7 +246,7 @@ std::vector<std::string> my_coloring_function( Cell* pCell )
     double z1_2 = pCell->phenotype.molecular.internalized_total_substrates[chemical2_substrate_index];
     
     
-	if (internalization_flag == 1)
+	if (internalization_flag == true)
     {
 	if( pCell->phenotype.death.dead == false && pCell->type == 0 )
 	{

@@ -74,10 +74,10 @@
 
 <PhysiCell_settings version="devel-version">
 	<domain>
-		<x_min>-50</x_min>
-		<x_max>50</x_max>
-		<y_min>-50</y_min>
-		<y_max>50</y_max>
+		<x_min>-100</x_min>
+		<x_max>100</x_max>
+		<y_min>-100</y_min>
+		<y_max>100</y_max>
 		<z_min>-10</z_min>
 		<z_max>10</z_max>
 		<dx>20</dx>
@@ -93,7 +93,7 @@
 	</overall>
 	
 	<parallel>
-		<omp_num_threads>4</omp_num_threads>
+		<omp_num_threads>8</omp_num_threads>
 	</parallel> 
 	
 	<save>
@@ -165,7 +165,7 @@
 		<internal_secreted type="double" units="1/min" description="initial internalized secreted chemical (Default = 10.0)">10.0</internal_secreted>
 		
         
-		<internalization_color type="double" units="" description="Colorization (0->Default (Red), 1->Internal Chemicals 2">0</internalization_color>
+		<internalization_color type="bool" units="" description="Colorization (false->Default (Red), true->Internal Chemicals 2">false</internalization_color>
 	</user_parameters>
 	
 </PhysiCell_settings>
