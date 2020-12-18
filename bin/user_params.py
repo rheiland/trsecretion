@@ -26,6 +26,8 @@ class UserTab(object):
         desc_button_layout={'width':'45%'}
         divider_button_layout={'width':'40%'}
 
+        div_row1 = Button(description='---uptaken chemical---', disabled=True, layout=divider_button_layout)
+
         param_name1 = Button(description='uptaken_uptake_rate_coefficient', disabled=True, layout=name_button_layout)
         param_name1.style.button_color = 'tan'
 
@@ -57,6 +59,8 @@ class UserTab(object):
           value=0.0,
           step=0.01,
           style=style, layout=widget_layout)
+
+        div_row2 = Button(description='---secreted chemical---', disabled=True, layout=divider_button_layout)
 
         param_name5 = Button(description='secreted_uptake_rate_coefficient', disabled=True, layout=name_button_layout)
         param_name5.style.button_color = 'tan'
@@ -90,6 +94,8 @@ class UserTab(object):
           step=1,
           style=style, layout=widget_layout)
 
+        div_row3 = Button(description='---colorization---', disabled=True, layout=divider_button_layout)
+
         param_name9 = Button(description='internalization_color', disabled=True, layout=name_button_layout)
         param_name9.style.button_color = 'tan'
 
@@ -97,24 +103,30 @@ class UserTab(object):
           value=False,
           style=style, layout=widget_layout)
 
-        units_button1 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button1.style.button_color = 'tan'
+        units_button1 = Button(description='', disabled=True, layout=units_button_layout) 
+        units_button1.style.button_color = 'lightgreen'
         units_button2 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button2.style.button_color = 'lightgreen'
+        units_button2.style.button_color = 'tan'
         units_button3 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button3.style.button_color = 'tan'
+        units_button3.style.button_color = 'lightgreen'
         units_button4 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button4.style.button_color = 'lightgreen'
+        units_button4.style.button_color = 'tan'
         units_button5 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        units_button5.style.button_color = 'tan'
-        units_button6 = Button(description='1/min', disabled=True, layout=units_button_layout) 
+        units_button5.style.button_color = 'lightgreen'
+        units_button6 = Button(description='', disabled=True, layout=units_button_layout) 
         units_button6.style.button_color = 'lightgreen'
         units_button7 = Button(description='1/min', disabled=True, layout=units_button_layout) 
         units_button7.style.button_color = 'tan'
         units_button8 = Button(description='1/min', disabled=True, layout=units_button_layout) 
         units_button8.style.button_color = 'lightgreen'
-        units_button9 = Button(description='', disabled=True, layout=units_button_layout) 
+        units_button9 = Button(description='1/min', disabled=True, layout=units_button_layout) 
         units_button9.style.button_color = 'tan'
+        units_button10 = Button(description='1/min', disabled=True, layout=units_button_layout) 
+        units_button10.style.button_color = 'lightgreen'
+        units_button11 = Button(description='', disabled=True, layout=units_button_layout) 
+        units_button11.style.button_color = 'lightgreen'
+        units_button12 = Button(description='', disabled=True, layout=units_button_layout) 
+        units_button12.style.button_color = 'tan'
 
         desc_button2 = Button(description='uptake rate per min for uptaken chemical (Default = 0.0000075)' , tooltip='uptake rate per min for uptaken chemical (Default = 0.0000075)', disabled=True, layout=desc_button_layout) 
         desc_button2.style.button_color = 'tan'
@@ -132,18 +144,18 @@ class UserTab(object):
         desc_button8.style.button_color = 'tan'
         desc_button9 = Button(description='initial internalized secreted chemical (Default = 10.0)' , tooltip='initial internalized secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button9.style.button_color = 'lightgreen'
-        desc_button10 = Button(description='Colorization (false->Default (Red), true->Internal Chemicals 2' , tooltip='Colorization (false->Default (Red), true->Internal Chemicals 2', disabled=True, layout=desc_button_layout) 
+        desc_button10 = Button(description='Colorization (false->Default (Red), true->Colorize according to internal concentrations' , tooltip='Colorization (false->Default (Red), true->Colorize according to internal concentrations', disabled=True, layout=desc_button_layout) 
         desc_button10.style.button_color = 'tan'
 
-        row2 = [param_name1, self.uptaken_uptake_rate_coefficient, units_button1, desc_button2] 
-        row3 = [param_name2, self.uptaken_secretion_rate_coefficient, units_button2, desc_button3] 
-        row4 = [param_name3, self.uptaken_saturation_density, units_button3, desc_button4] 
-        row5 = [param_name4, self.internal_uptaken, units_button4, desc_button5] 
-        row6 = [param_name5, self.secreted_uptake_rate_coefficient, units_button5, desc_button6] 
-        row7 = [param_name6, self.secreted_secretion_rate_coefficient, units_button6, desc_button7] 
-        row8 = [param_name7, self.secreted_saturation_density, units_button7, desc_button8] 
-        row9 = [param_name8, self.internal_secreted, units_button8, desc_button9] 
-        row10 = [param_name9, self.internalization_color, units_button9, desc_button10] 
+        row2 = [param_name1, self.uptaken_uptake_rate_coefficient, units_button2, desc_button2] 
+        row3 = [param_name2, self.uptaken_secretion_rate_coefficient, units_button3, desc_button3] 
+        row4 = [param_name3, self.uptaken_saturation_density, units_button4, desc_button4] 
+        row5 = [param_name4, self.internal_uptaken, units_button5, desc_button5] 
+        row6 = [param_name5, self.secreted_uptake_rate_coefficient, units_button7, desc_button6] 
+        row7 = [param_name6, self.secreted_secretion_rate_coefficient, units_button8, desc_button7] 
+        row8 = [param_name7, self.secreted_saturation_density, units_button9, desc_button8] 
+        row9 = [param_name8, self.internal_secreted, units_button10, desc_button9] 
+        row10 = [param_name9, self.internalization_color, units_button12, desc_button10] 
 
         box_layout = Layout(display='flex', flex_flow='row', align_items='stretch', width='100%')
         box2 = Box(children=row2, layout=box_layout)
@@ -157,14 +169,17 @@ class UserTab(object):
         box10 = Box(children=row10, layout=box_layout)
 
         self.tab = VBox([
+          div_row1,
           box2,
           box3,
           box4,
           box5,
+          div_row2,
           box6,
           box7,
           box8,
           box9,
+          div_row3,
           box10,
         ])
 

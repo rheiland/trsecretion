@@ -74,10 +74,10 @@
 
 <PhysiCell_settings version="devel-version">
 	<domain>
-		<x_min>-100</x_min>
-		<x_max>100</x_max>
-		<y_min>-100</y_min>
-		<y_max>100</y_max>
+		<x_min>-110</x_min>
+		<x_max>110</x_max>
+		<y_min>-110</y_min>
+		<y_max>110</y_max>
 		<z_min>-10</z_min>
 		<z_max>10</z_max>
 		<dx>20</dx>
@@ -151,21 +151,20 @@
 		<random_seed type="int" units="dimensionless" hidden="true">0</random_seed> 
 		<!-- example parameters from the template --> 
 		
-		
-		<!-- motile cell type parameters --> 
+		<div_uptaken type="divider" description="---uptaken chemical---"/>
 		<uptaken_uptake_rate_coefficient type="double" units="1/min"  description="uptake rate per min for uptaken chemical (Default = 0.0000075)">0.0000075</uptaken_uptake_rate_coefficient>
 		<uptaken_secretion_rate_coefficient type="double" units="1/min" description="secreteion rate per min for uptaken chemical (Default = 0.0)">0.0</uptaken_secretion_rate_coefficient>
 		<uptaken_saturation_density type="double" units="1/min" description="saturation density for uptaken chemical (Default = 10.0)">10.0</uptaken_saturation_density>
 		<internal_uptaken type="double" units="1/min" description="initial internalized uptaken chemical (Default = 0.0)">0.0</internal_uptaken>
 		
-		
+		<div_secreted type="divider" description="---secreted chemical---"/>
 		<secreted_uptake_rate_coefficient type="double" units="1/min" description="uptake rate per min for secreted chemical (Default = 0.0)">0.0</secreted_uptake_rate_coefficient>
 		<secreted_secretion_rate_coefficient type="double" units="1/min" description="secreteion rate per min for secreted chemical (Default = 0.0000075)">0.0000075</secreted_secretion_rate_coefficient>
 		<secreted_saturation_density type="double" units="1/min" description="saturation density for secreted chemical (Default = 10.0)">10.0</secreted_saturation_density>
 		<internal_secreted type="double" units="1/min" description="initial internalized secreted chemical (Default = 10.0)">10.0</internal_secreted>
 		
-        
-		<internalization_color type="bool" units="" description="Colorization (false->Default (Red), true->Internal Chemicals 2">false</internalization_color>
+        <div_intcol type="divider" description="---colorization---"/>
+		<internalization_color type="bool" units="" description="Colorization (false->Default (Red), true->Colorize according to internal concentrations">false</internalization_color>
 	</user_parameters>
 	
 </PhysiCell_settings>

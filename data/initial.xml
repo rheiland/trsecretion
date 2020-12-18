@@ -11,16 +11,16 @@
 		</software>
 		<citation />
 		<current_time units="min">0.000000</current_time>
-		<current_runtime units="sec">0.043019</current_runtime>
-		<created>2020-04-21T00:55:38Z</created>
-		<last_modified>2020-04-21T00:55:38Z</last_modified>
+		<current_runtime units="sec">0.049373</current_runtime>
+		<created>2020-12-18T17:08:36Z</created>
+		<last_modified>2020-12-18T17:08:36Z</last_modified>
 	</metadata>
 	<microenvironment>
 		<domain name="microenvironment">
 			<mesh type="Cartesian" uniform="true" regular="true" units="micron">
-				<bounding_box type="axis-aligned" units="micron">-100.000000 -100.000000 -10.000000 100.000000 100.000000 10.000000</bounding_box>
-				<x_coordinates delimiter=" ">-90.000000 -70.000000 -50.000000 -30.000000 -10.000000 10.000000 30.000000 50.000000 70.000000 90.000000</x_coordinates>
-				<y_coordinates delimiter=" ">-90.000000 -70.000000 -50.000000 -30.000000 -10.000000 10.000000 30.000000 50.000000 70.000000 90.000000</y_coordinates>
+				<bounding_box type="axis-aligned" units="micron">-110.000000 -110.000000 -10.000000 110.000000 110.000000 10.000000</bounding_box>
+				<x_coordinates delimiter=" ">-100.000000 -80.000000 -60.000000 -40.000000 -20.000000 0.000000 20.000000 40.000000 60.000000 80.000000 100.000000</x_coordinates>
+				<y_coordinates delimiter=" ">-100.000000 -80.000000 -60.000000 -40.000000 -20.000000 0.000000 20.000000 40.000000 60.000000 80.000000 100.000000</y_coordinates>
 				<z_coordinates delimiter=" ">0.000000</z_coordinates>
 				<voxels type="matlab">
 					<filename>initial_mesh0.mat</filename>
