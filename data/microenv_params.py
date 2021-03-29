@@ -22,49 +22,70 @@ class MicroenvTab(object):
 
         name_button_layout={'width':'25%'}
         widget_layout = {'width': '15%'}
+        widget2_layout = {'width': '10%'}
         units_button_layout ={'width':'15%'}
         desc_button_layout={'width':'45%'}
 
 
-        menv_var1 = Button(description='uptaken (concentration)', disabled=True, layout=name_button_layout)
+        menv_var1 = Button(description='chemical_A (mmol)', disabled=True, layout=name_button_layout)
         menv_var1.style.button_color = 'tan'
 
         param_name1 = Button(description='diffusion_coefficient', disabled=True, layout=name_button_layout)
 
-        self.uptaken_diffusion_coefficient = FloatText(value=1000.0,
+        self.chemical_A_diffusion_coefficient = FloatText(value=1000.0,
           step=100,style=style, layout=widget_layout)
 
         param_name2 = Button(description='decay_rate', disabled=True, layout=name_button_layout)
 
-        self.uptaken_decay_rate = FloatText(value=0.0,
+        self.chemical_A_decay_rate = FloatText(value=0.0,
           step=0.01,style=style, layout=widget_layout)
         param_name3 = Button(description='initial_condition', disabled=True, layout=name_button_layout)
 
-        self.uptaken_initial_condition = FloatText(value=10.0,style=style, layout=widget_layout)
+        self.chemical_A_initial_condition = FloatText(value=5.0,style=style, layout=widget_layout)
         param_name4 = Button(description='Dirichlet_boundary_condition', disabled=True, layout=name_button_layout)
 
-        self.uptaken_Dirichlet_boundary_condition = FloatText(value=38.0,style=style, layout=widget_layout)
-        self.uptaken_Dirichlet_boundary_condition_toggle = Checkbox(description='on/off', disabled=False,style=style, layout=widget_layout)
+        self.chemical_A_Dirichlet_boundary_condition = FloatText(value=0.0,style=style, layout=widget_layout)
+        self.chemical_A_Dirichlet_boundary_condition_toggle = Checkbox(description='on/off', disabled=False,style=style, layout=widget_layout)
 
-        menv_var2 = Button(description='secreted (concentration)', disabled=True, layout=name_button_layout)
+        menv_var2 = Button(description='chemical_B (mmol)', disabled=True, layout=name_button_layout)
         menv_var2.style.button_color = 'lightgreen'
 
         param_name5 = Button(description='diffusion_coefficient', disabled=True, layout=name_button_layout)
 
-        self.secreted_diffusion_coefficient = FloatText(value=1000.0,
+        self.chemical_B_diffusion_coefficient = FloatText(value=1000.0,
           step=100,style=style, layout=widget_layout)
 
         param_name6 = Button(description='decay_rate', disabled=True, layout=name_button_layout)
 
-        self.secreted_decay_rate = FloatText(value=0.0,
+        self.chemical_B_decay_rate = FloatText(value=0.0,
           step=0.01,style=style, layout=widget_layout)
         param_name7 = Button(description='initial_condition', disabled=True, layout=name_button_layout)
 
-        self.secreted_initial_condition = FloatText(value=0.0,style=style, layout=widget_layout)
+        self.chemical_B_initial_condition = FloatText(value=5.0,style=style, layout=widget_layout)
         param_name8 = Button(description='Dirichlet_boundary_condition', disabled=True, layout=name_button_layout)
 
-        self.secreted_Dirichlet_boundary_condition = FloatText(value=38.0,style=style, layout=widget_layout)
-        self.secreted_Dirichlet_boundary_condition_toggle = Checkbox(description='on/off', disabled=False,style=style, layout=widget_layout)
+        self.chemical_B_Dirichlet_boundary_condition = FloatText(value=0.0,style=style, layout=widget_layout)
+        self.chemical_B_Dirichlet_boundary_condition_toggle = Checkbox(description='on/off', disabled=False,style=style, layout=widget_layout)
+
+        menv_var3 = Button(description='chemical_C (mmol)', disabled=True, layout=name_button_layout)
+        menv_var3.style.button_color = 'tan'
+
+        param_name9 = Button(description='diffusion_coefficient', disabled=True, layout=name_button_layout)
+
+        self.chemical_C_diffusion_coefficient = FloatText(value=1000.0,
+          step=100,style=style, layout=widget_layout)
+
+        param_name10 = Button(description='decay_rate', disabled=True, layout=name_button_layout)
+
+        self.chemical_C_decay_rate = FloatText(value=0.0,
+          step=0.01,style=style, layout=widget_layout)
+        param_name11 = Button(description='initial_condition', disabled=True, layout=name_button_layout)
+
+        self.chemical_C_initial_condition = FloatText(value=5.0,style=style, layout=widget_layout)
+        param_name12 = Button(description='Dirichlet_boundary_condition', disabled=True, layout=name_button_layout)
+
+        self.chemical_C_Dirichlet_boundary_condition = FloatText(value=0.0,style=style, layout=widget_layout)
+        self.chemical_C_Dirichlet_boundary_condition_toggle = Checkbox(description='on/off', disabled=False,style=style, layout=widget_layout)
         self.calculate_gradient = Checkbox(description='calculate_gradients', disabled=False, layout=desc_button_layout)
         self.track_internal = Checkbox(description='track_in_agents', disabled=False, layout=desc_button_layout)
 
@@ -72,57 +93,76 @@ class MicroenvTab(object):
          #  ------- micronenv info
         menv_units_button1 = Button(description='micron^2/min', disabled=True, layout=units_button_layout) 
         menv_units_button2 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        menv_units_button3 = Button(description='mmHg', disabled=True, layout=units_button_layout) 
-        menv_units_button4 = Button(description='mmHg', disabled=True, layout=units_button_layout) 
+        menv_units_button3 = Button(description='mmol', disabled=True, layout=units_button_layout) 
+        menv_units_button4 = Button(description='mmol', disabled=True, layout=units_button_layout) 
         menv_units_button5 = Button(description='micron^2/min', disabled=True, layout=units_button_layout) 
         menv_units_button6 = Button(description='1/min', disabled=True, layout=units_button_layout) 
-        menv_units_button7 = Button(description='mmHg', disabled=True, layout=units_button_layout) 
-        menv_units_button8 = Button(description='mmHg', disabled=True, layout=units_button_layout) 
+        menv_units_button7 = Button(description='mmol', disabled=True, layout=units_button_layout) 
+        menv_units_button8 = Button(description='mmol', disabled=True, layout=units_button_layout) 
+        menv_units_button9 = Button(description='micron^2/min', disabled=True, layout=units_button_layout) 
+        menv_units_button10 = Button(description='1/min', disabled=True, layout=units_button_layout) 
+        menv_units_button11 = Button(description='mmol', disabled=True, layout=units_button_layout) 
+        menv_units_button12 = Button(description='mmol', disabled=True, layout=units_button_layout) 
 
 
 
 
-        row_uptaken = [menv_var1,  ] 
-        row1 = [param_name1, self.uptaken_diffusion_coefficient, menv_units_button1]
-        row2 = [param_name2, self.uptaken_decay_rate, menv_units_button2]
-        row3 = [param_name3, self.uptaken_initial_condition, menv_units_button3]
-        row4 = [param_name4, self.uptaken_Dirichlet_boundary_condition, menv_units_button4, self.uptaken_Dirichlet_boundary_condition_toggle]
-        row_secreted = [menv_var2,  ] 
-        row5 = [param_name5, self.secreted_diffusion_coefficient, menv_units_button5]
-        row6 = [param_name6, self.secreted_decay_rate, menv_units_button6]
-        row7 = [param_name7, self.secreted_initial_condition, menv_units_button7]
-        row8 = [param_name8, self.secreted_Dirichlet_boundary_condition, menv_units_button8, self.secreted_Dirichlet_boundary_condition_toggle]
-        row9 = [self.calculate_gradient,]
-        row10 = [self.track_internal,]
+        row_chemical_A = [menv_var1,  ] 
+        row1 = [param_name1, self.chemical_A_diffusion_coefficient, menv_units_button1]
+        row2 = [param_name2, self.chemical_A_decay_rate, menv_units_button2]
+        row3 = [param_name3, self.chemical_A_initial_condition, menv_units_button3]
+        row4 = [param_name4, self.chemical_A_Dirichlet_boundary_condition, menv_units_button4, self.chemical_A_Dirichlet_boundary_condition_toggle]
+        row_chemical_B = [menv_var2,  ] 
+        row5 = [param_name5, self.chemical_B_diffusion_coefficient, menv_units_button5]
+        row6 = [param_name6, self.chemical_B_decay_rate, menv_units_button6]
+        row7 = [param_name7, self.chemical_B_initial_condition, menv_units_button7]
+        row8 = [param_name8, self.chemical_B_Dirichlet_boundary_condition, menv_units_button8, self.chemical_B_Dirichlet_boundary_condition_toggle]
+        row_chemical_C = [menv_var3,  ] 
+        row9 = [param_name9, self.chemical_C_diffusion_coefficient, menv_units_button9]
+        row10 = [param_name10, self.chemical_C_decay_rate, menv_units_button10]
+        row11 = [param_name11, self.chemical_C_initial_condition, menv_units_button11]
+        row12 = [param_name12, self.chemical_C_Dirichlet_boundary_condition, menv_units_button12, self.chemical_C_Dirichlet_boundary_condition_toggle]
+        row13 = [self.calculate_gradient,]
+        row14 = [self.track_internal,]
 
 
         box_layout = Layout(display='flex', flex_flow='row', align_items='stretch', width='100%')
-        box_uptaken = Box(children=row_uptaken, layout=box_layout)
+        box_chemical_A = Box(children=row_chemical_A, layout=box_layout)
         box1 = Box(children=row1, layout=box_layout)
         box2 = Box(children=row2, layout=box_layout)
         box3 = Box(children=row3, layout=box_layout)
         box4 = Box(children=row4, layout=box_layout)
-        box_secreted = Box(children=row_secreted, layout=box_layout)
+        box_chemical_B = Box(children=row_chemical_B, layout=box_layout)
         box5 = Box(children=row5, layout=box_layout)
         box6 = Box(children=row6, layout=box_layout)
         box7 = Box(children=row7, layout=box_layout)
         box8 = Box(children=row8, layout=box_layout)
+        box_chemical_C = Box(children=row_chemical_C, layout=box_layout)
         box9 = Box(children=row9, layout=box_layout)
         box10 = Box(children=row10, layout=box_layout)
+        box11 = Box(children=row11, layout=box_layout)
+        box12 = Box(children=row12, layout=box_layout)
+        box13 = Box(children=row13, layout=box_layout)
+        box14 = Box(children=row14, layout=box_layout)
 
         self.tab = VBox([
-          box_uptaken,
+          box_chemical_A,
           box1,
           box2,
           box3,
           box4,
-          box_secreted,
+          box_chemical_B,
           box5,
           box6,
           box7,
           box8,
+          box_chemical_C,
           box9,
           box10,
+          box11,
+          box12,
+          box13,
+          box14,
         ])
 
     # Populate the GUI widgets with values from the XML
@@ -135,23 +175,32 @@ class MicroenvTab(object):
 
         uep = xml_root.find('.//microenvironment_setup')  # find unique entry point
 
-        self.uptaken_diffusion_coefficient.value = float(vp[0].find('.//diffusion_coefficient').text)
-        self.uptaken_decay_rate.value = float(vp[0].find('.//decay_rate').text)
-        self.uptaken_initial_condition.value = float(vp[0].find('.//initial_condition').text)
-        self.uptaken_Dirichlet_boundary_condition.value = float(vp[0].find('.//Dirichlet_boundary_condition').text)
+        self.chemical_A_diffusion_coefficient.value = float(vp[0].find('.//diffusion_coefficient').text)
+        self.chemical_A_decay_rate.value = float(vp[0].find('.//decay_rate').text)
+        self.chemical_A_initial_condition.value = float(vp[0].find('.//initial_condition').text)
+        self.chemical_A_Dirichlet_boundary_condition.value = float(vp[0].find('.//Dirichlet_boundary_condition').text)
         if vp[0].find('.//Dirichlet_boundary_condition').attrib['enabled'].lower() == 'true':
-          self.uptaken_Dirichlet_boundary_condition_toggle.value = True
+          self.chemical_A_Dirichlet_boundary_condition_toggle.value = True
         else:
-          self.uptaken_Dirichlet_boundary_condition_toggle.value = False
+          self.chemical_A_Dirichlet_boundary_condition_toggle.value = False
 
-        self.secreted_diffusion_coefficient.value = float(vp[1].find('.//diffusion_coefficient').text)
-        self.secreted_decay_rate.value = float(vp[1].find('.//decay_rate').text)
-        self.secreted_initial_condition.value = float(vp[1].find('.//initial_condition').text)
-        self.secreted_Dirichlet_boundary_condition.value = float(vp[1].find('.//Dirichlet_boundary_condition').text)
+        self.chemical_B_diffusion_coefficient.value = float(vp[1].find('.//diffusion_coefficient').text)
+        self.chemical_B_decay_rate.value = float(vp[1].find('.//decay_rate').text)
+        self.chemical_B_initial_condition.value = float(vp[1].find('.//initial_condition').text)
+        self.chemical_B_Dirichlet_boundary_condition.value = float(vp[1].find('.//Dirichlet_boundary_condition').text)
         if vp[1].find('.//Dirichlet_boundary_condition').attrib['enabled'].lower() == 'true':
-          self.secreted_Dirichlet_boundary_condition_toggle.value = True
+          self.chemical_B_Dirichlet_boundary_condition_toggle.value = True
         else:
-          self.secreted_Dirichlet_boundary_condition_toggle.value = False
+          self.chemical_B_Dirichlet_boundary_condition_toggle.value = False
+
+        self.chemical_C_diffusion_coefficient.value = float(vp[2].find('.//diffusion_coefficient').text)
+        self.chemical_C_decay_rate.value = float(vp[2].find('.//decay_rate').text)
+        self.chemical_C_initial_condition.value = float(vp[2].find('.//initial_condition').text)
+        self.chemical_C_Dirichlet_boundary_condition.value = float(vp[2].find('.//Dirichlet_boundary_condition').text)
+        if vp[2].find('.//Dirichlet_boundary_condition').attrib['enabled'].lower() == 'true':
+          self.chemical_C_Dirichlet_boundary_condition_toggle.value = True
+        else:
+          self.chemical_C_Dirichlet_boundary_condition_toggle.value = False
 
         if uep.find('.//options//calculate_gradients').text.lower() == 'true':
           self.calculate_gradient.value = True
@@ -173,17 +222,23 @@ class MicroenvTab(object):
                 vp.append(var)
 
         uep = xml_root.find('.//microenvironment_setup')  # find unique entry point
-        vp[0].find('.//diffusion_coefficient').text = str(self.uptaken_diffusion_coefficient.value)
-        vp[0].find('.//decay_rate').text = str(self.uptaken_decay_rate.value)
-        vp[0].find('.//initial_condition').text = str(self.uptaken_initial_condition.value)
-        vp[0].find('.//Dirichlet_boundary_condition').text = str(self.uptaken_Dirichlet_boundary_condition.value)
-        vp[0].find('.//Dirichlet_boundary_condition').attrib['enabled'] = str(self.uptaken_Dirichlet_boundary_condition_toggle.value).lower()
+        vp[0].find('.//diffusion_coefficient').text = str(self.chemical_A_diffusion_coefficient.value)
+        vp[0].find('.//decay_rate').text = str(self.chemical_A_decay_rate.value)
+        vp[0].find('.//initial_condition').text = str(self.chemical_A_initial_condition.value)
+        vp[0].find('.//Dirichlet_boundary_condition').text = str(self.chemical_A_Dirichlet_boundary_condition.value)
+        vp[0].find('.//Dirichlet_boundary_condition').attrib['enabled'] = str(self.chemical_A_Dirichlet_boundary_condition_toggle.value).lower()
 
-        vp[1].find('.//diffusion_coefficient').text = str(self.secreted_diffusion_coefficient.value)
-        vp[1].find('.//decay_rate').text = str(self.secreted_decay_rate.value)
-        vp[1].find('.//initial_condition').text = str(self.secreted_initial_condition.value)
-        vp[1].find('.//Dirichlet_boundary_condition').text = str(self.secreted_Dirichlet_boundary_condition.value)
-        vp[1].find('.//Dirichlet_boundary_condition').attrib['enabled'] = str(self.secreted_Dirichlet_boundary_condition_toggle.value).lower()
+        vp[1].find('.//diffusion_coefficient').text = str(self.chemical_B_diffusion_coefficient.value)
+        vp[1].find('.//decay_rate').text = str(self.chemical_B_decay_rate.value)
+        vp[1].find('.//initial_condition').text = str(self.chemical_B_initial_condition.value)
+        vp[1].find('.//Dirichlet_boundary_condition').text = str(self.chemical_B_Dirichlet_boundary_condition.value)
+        vp[1].find('.//Dirichlet_boundary_condition').attrib['enabled'] = str(self.chemical_B_Dirichlet_boundary_condition_toggle.value).lower()
+
+        vp[2].find('.//diffusion_coefficient').text = str(self.chemical_C_diffusion_coefficient.value)
+        vp[2].find('.//decay_rate').text = str(self.chemical_C_decay_rate.value)
+        vp[2].find('.//initial_condition').text = str(self.chemical_C_initial_condition.value)
+        vp[2].find('.//Dirichlet_boundary_condition').text = str(self.chemical_C_Dirichlet_boundary_condition.value)
+        vp[2].find('.//Dirichlet_boundary_condition').attrib['enabled'] = str(self.chemical_C_Dirichlet_boundary_condition_toggle.value).lower()
 
 
         uep.find('.//options//calculate_gradients').text = str(self.calculate_gradient.value)

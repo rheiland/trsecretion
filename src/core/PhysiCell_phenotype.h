@@ -33,7 +33,7 @@
 #                                                                             #
 # BSD 3-Clause License (see https://opensource.org/licenses/BSD-3-Clause)     #
 #                                                                             #
-# Copyright (c) 2015-2018, Paul Macklin and the PhysiCell Project             #
+# Copyright (c) 2015-2021, Paul Macklin and the PhysiCell Project             #
 # All rights reserved.                                                        #
 #                                                                             #
 # Redistribution and use in source and binary forms, with or without          #
@@ -330,8 +330,6 @@ class Volume
 	
 	void divide( void ); // done 
 	void multiply_by_ratio(double); // done 
-	
-	void update( Cell* pCell, Phenotype& phenotype, double dt ); // done 
 };
 
 class Geometry
@@ -354,6 +352,7 @@ class Geometry
 
 class Mechanics
 {
+ private:
  public:
 	double cell_cell_adhesion_strength; 
 	double cell_BM_adhesion_strength;
@@ -364,6 +363,12 @@ class Mechanics
 	double relative_maximum_adhesion_distance; 
 	// double maximum_adhesion_distance; // needed? 
 	
+	double relative_maximum_attachment_distance; 
+	double relative_detachment_distance; 
+	
+	int maximum_number_of_attachments; 
+	double attachment_elastic_constant; 
+	double maximum_attachment_rate; 
 	
 	Mechanics(); // done 
 	
@@ -394,6 +399,9 @@ class Motility
 		// if true, set random motility to 2D only. 
 		
 	std::vector<double> motility_vector; 
+	
+	int chemotaxis_index; 
+	int chemotaxis_direction; 
 		
 	Motility(); // done 
 };
@@ -407,6 +415,7 @@ class Secretion
 	std::vector<double> secretion_rates; 
 	std::vector<double> uptake_rates; 
 	std::vector<double> saturation_densities;
+	std::vector<double> net_export_rates; 
 	
 	// in the default constructor, we'll size to the default microenvironment, if 
 	// specified. (This ties to BioFVM.) 

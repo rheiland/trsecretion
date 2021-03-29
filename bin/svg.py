@@ -48,7 +48,7 @@ class SVGTab(object):
         self.svg_plot.layout.width = plot_size
         self.svg_plot.layout.height = plot_size
         self.use_defaults = True
-        self.show_nucleus = 1  # 0->False, 1->True in Checkbox!
+        self.show_nucleus = 0  # 0->False, 1->True in Checkbox!
         self.show_edge = 1  # 0->False, 1->True in Checkbox!
         self.scale_radius = 1.0
         self.axes_min = 0.0
@@ -63,7 +63,7 @@ class SVGTab(object):
         self.max_frames.observe(self.update_max_frames)
 
         self.show_nucleus_checkbox= Checkbox(
-            description='nucleus', value=True, disabled=False,
+            description='nucleus', value=False, disabled=False,
             layout=Layout(width=constWidth),
 #            layout=Layout(flex='1 1 auto', width='auto'),  #Layout(width='160px'),
         )
@@ -133,7 +133,7 @@ class SVGTab(object):
         if (self.show_nucleus_checkbox.value):
             self.show_nucleus = 1
         else:
-            self.show_nucleus = 1
+            self.show_nucleus = 0
 #        self.plot_svg(self,current_frame)
         self.svg_plot.update()
 

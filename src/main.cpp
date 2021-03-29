@@ -83,6 +83,99 @@
 using namespace BioFVM;
 using namespace PhysiCell;
 
+
+void update_secr_param_and_ic_int_met()
+{
+    static int chemical_A_substrate_index = microenvironment.find_density_index( "chemical_A" );
+	static int chemical_B_substrate_index = microenvironment.find_density_index( "chemical_B" ); 
+    static int chemical_C_substrate_index = microenvironment.find_density_index( "chemical_C");
+
+    for( int i=0; i < (*all_cells).size(); i++ )
+    {
+        if( (*all_cells)[i]->is_out_of_domain == false  )
+        {
+          if ( (*all_cells)[i]->type == 1)
+          {
+            std::cout << "TEST" << std::endl;
+            (*all_cells)[i]->phenotype.secretion.uptake_rates[chemical_A_substrate_index] = parameters.doubles( "chemical_A_uptake_rate_coefficient" );
+            (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index] = parameters.doubles( "internal_chemical_A" );
+          }
+          
+          if ( (*all_cells)[i]->type == 2)
+          {
+            (*all_cells)[i]->phenotype.secretion.secretion_rates[chemical_B_substrate_index] = parameters.doubles( "chemical_B_secretion_rate" ); 
+            (*all_cells)[i]->phenotype.secretion.saturation_densities[chemical_B_substrate_index] = parameters.doubles( "chemical_B_saturation_density" );  
+            (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index] = parameters.doubles( "internal_chemical_B" );  
+          }
+          
+          if ( (*all_cells)[i]->type == 3)
+          {
+            (*all_cells)[i]->phenotype.secretion.net_export_rates[chemical_C_substrate_index] = parameters.doubles( "chemical_C_secretion_rate" );
+            (*all_cells)[i]->phenotype.secretion.saturation_densities[chemical_C_substrate_index] = parameters.doubles( "chemical_C_saturation_density" );
+            (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index] = parameters.doubles( "internal_chemical_C" );
+          }
+        }
+    }
+}
+
+void update_intracellular()
+{
+	static int chemical_A_substrate_index = microenvironment.find_density_index( "chemical_A" );
+	static int chemical_B_substrate_index = microenvironment.find_density_index( "chemical_B" ); 
+    static int chemical_C_substrate_index = microenvironment.find_density_index( "chemical_C");
+
+    static bool int_chem_reac = parameters.bools("internal_reactions");
+    static double chemA_cons_1 = parameters.doubles("Chemical_A_consumption_rate");
+    static double chemB_crea_2 = parameters.doubles("Chemical_B_creation_rate");    
+    static double chemC_cons_3 = parameters.doubles("Chemical_C_consumption_rate");    
+    static double chemC_crea_3 = parameters.doubles("Chemical_C_creation_rate");    
+
+    if ( int_chem_reac == true )
+    {
+        for( int j=0; j < (*all_cells).size(); j++ )
+        {
+            if ( (*all_cells)[j]->type == 1 )
+            {
+                //std::cout << "Before consumption - Cell Type 1 = " <<(*all_cells)[j]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index] << std::endl;
+                (*all_cells)[j]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index] += -1 * chemA_cons_1;
+                //std::cout << "After consumption - Cell Type 1 = " <<(*all_cells)[j]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index] << std::endl;
+            }
+            if ( (*all_cells)[j]->type == 2 )
+            {
+                (*all_cells)[j]->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index] += chemB_crea_2;
+            }
+            if ( (*all_cells)[j]->type == 3 )
+            {
+                (*all_cells)[j]->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index] += chemC_crea_3 - 1 * chemC_cons_3;
+
+            }            
+        }
+    }
+
+ 
+    for( int i=0; i < (*all_cells).size(); i++ )
+    {
+        if( (*all_cells)[i]->is_out_of_domain == false  )
+        {
+            if ( (*all_cells)[i]->type == 1 )
+            {
+                //std::cout << "Before update - Cell_Type 1 = " << (*all_cells)[i]->custom_data["internal_chemical_A"] << std::endl;
+                (*all_cells)[i]->custom_data["internal_chemical_A"] = (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index];
+                //std::cout << "After update - Cell_Type 1 = " << (*all_cells)[i]->custom_data["internal_chemical_A"] << std::endl;;
+            }
+            if ( (*all_cells)[i]->type == 2 )
+            {
+                (*all_cells)[i]->custom_data["internal_chemical_B"]=(*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index];
+            }
+            if ( (*all_cells)[i]->type == 3 )
+            {
+                (*all_cells)[i]->custom_data["internal_chemical_C"]=(*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index];
+            }
+        }
+    }
+}
+
+
 int main( int argc, char* argv[] )
 {
 	// load and parse settings file(s)
@@ -112,11 +205,14 @@ int main( int argc, char* argv[] )
 	double mechanics_voxel_size = 30; 
 	Cell_Container* cell_container = create_cell_container_for_microenvironment( microenvironment, mechanics_voxel_size );
 	
+    SeedRandom( parameters.ints("random_seed") ); // or specify a seed here 
+
 	/* Users typically start modifying here. START USERMODS */ 
 	
 	create_cell_types();
 	
 	setup_tissue();
+    update_secr_param_and_ic_int_met();
 
 	/* Users typically stop modifying here. END USERMODS */ 
 	
@@ -202,10 +298,11 @@ int main( int argc, char* argv[] )
 
 			// update the microenvironment
 			microenvironment.simulate_diffusion_decay( diffusion_dt );
+            microenvironment.simulate_cell_sources_and_sinks( diffusion_dt );
 			
 			// run PhysiCell 
 			((Cell_Container *)microenvironment.agent_container)->update_all_cells( PhysiCell_globals.current_time );
-			
+			update_intracellular();
 			/*
 			  Custom add-ons could potentially go here. 
 			*/
