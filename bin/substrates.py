@@ -799,8 +799,9 @@ class SubstrateTab(object):
                 tissue_parent = child
                 break
 
-        # print('------ search tissue')
-        cells_parent = None
+        # print('------ search tissue') ##Adding Internal Chemical
+        cells_parent = None; ChemA = None; ChemB = None; ChemC = None
+        
 
         for child in tissue_parent:
             # print('attrib=',child.attrib)
@@ -809,6 +810,34 @@ class SubstrateTab(object):
                 cells_parent = child
                 break
             numChildren += 1
+
+###############################
+# Internal Chemical
+        for child in tissue_parent:
+            #print('attrib=',child.attrib)
+            if (child.attrib['id'] == 'internal_chemical_A'):
+                #print('-------- found cells, setting cells_parent')
+                ChemA = child
+                break
+            numChildren += 1
+
+        for child in tissue_parent:
+            #print('attrib=',child.attrib)
+            if (child.attrib['id'] == 'internal_chemical_B'):
+                #print('-------- found cells, setting cells_parent')
+                ChemB = child
+                break
+            numChildren += 1
+
+
+        for child in tissue_parent:
+            #print('attrib=',child.attrib)
+            if (child.attrib['id'] == 'internal_chemical_C'):
+                print('-------- found cells, setting cells_parent')
+                ChemC = child
+                break
+            numChildren += 1
+##############################
 
         num_cells = 0
         #  print('------ search cells')
@@ -1153,18 +1182,3 @@ class SubstrateTab(object):
         # x = np.linspace(0, 500)
         # oxy_ax.plot(x, 300*np.sin(x))
 
-    #---------------------------------------------------------------------------
-    # def plot_plots(self, frame):
-    #     # if (self.first_time):
-    #     #     self.svg_delta_t = 1
-    #     #     self.substrate_delta_t = 1
-    #     #     self.first_time = False
-
-    #     if (self.substrates_toggle.value):
-    #         self.fig = plt.figure(figsize=(14, 15.6))
-    #     else:  # only cells being displayed (maybe)
-    #         self.fig = plt.figure(figsize=(12, 12))
-    #     # grid = plt.GridSpec(4, 3, wspace=0.10, hspace=0.2)   # (nrows, ncols)
-    #     # self.plot_substrate(frame, grid)
-    #     self.plot_substrate(frame)
-    #     # self.plot_svg(frame)
