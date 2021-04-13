@@ -10,9 +10,7 @@ from pathlib import Path
 from ipywidgets import Layout, Label, Text, Checkbox, Button, BoundedIntText, HBox, VBox, Box, \
     FloatText, Dropdown, SelectMultiple, RadioButtons, interactive
 import matplotlib.pyplot as plt
-import matplotlib.ticker as tick
 from matplotlib.colors import BoundaryNorm
-from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import MaxNLocator
 from matplotlib.collections import LineCollection
 from matplotlib.patches import Circle, Ellipse, Rectangle
@@ -78,24 +76,10 @@ class SubstrateTab(object):
 
         self.axis_label_fontsize = 15
 
-        # Furkan
-        self.plots4_width = 16
-        self.plots4_height = 16
-
         self.ax0 = None
         self.ax1 = None
-        self.ax2 = None
-        self.ax3 = None
-        self.ax4 = None
-        self.ax5 = None
         self.ax1_lymph_TC = None
         self.ax1_lymph_TH2 = None
-        self.ax1_extracellular = None
-        self.ax1_total_chem = None
-        self.ax2_extracellular = None
-        self.ax2_total_chem = None
-        self.ax3_extracellular = None
-        self.ax3_total_chem = None        
 
         self.updated_analysis_flag = True
         self.analysis_data_plotted = False
@@ -149,8 +133,7 @@ class SubstrateTab(object):
         self.show_edge = True
         self.alpha = 1.0   # 0.7 is partially transparent (all cells)
 
-        # substrates_default_disabled_flag = True  # True = disable them by default; False=enable them
-        substrates_default_disabled_flag = False
+        substrates_default_disabled_flag = True  # True = disable them by default; False=enable them
 
         # initial value
         self.field_index = 4
@@ -168,23 +151,31 @@ class SubstrateTab(object):
         self.yval1 = np.empty([1]) # live, infected, dead
         self.yval2 = np.empty([1])
         self.yval3 = np.empty([1])
-        self.yval_ext1 = np.empty([1])
-        self.yval_ext2 = np.empty([1])
-        self.yval_ext3 = np.empty([1])
-        self.yval_tot1 = np.empty([1])
-        self.yval_tot2 = np.empty([1])        
-        self.yval_tot3 = np.empty([1])
+
+        self.yval4 = np.empty([1]) # Mac,Neut,CD8,DC,CD4,Fib
+        self.yval5 = np.empty([1])
+        self.yval6 = np.empty([1])
+        self.yval7 = np.empty([1])
+        self.yval8 = np.empty([1])
+        self.yval9 = np.empty([1])
+
+        self.yval10 = np.empty([1]) # viral load
+
+        self.yval11 = np.empty([1])  # lymph node dynamics: DC,TC,TH1,TH2
+        self.yval12 = np.empty([1])
+        self.yval13 = np.empty([1])
+        self.yval14 = np.empty([1])
 
         self.tname = "time"
         self.yname = 'Y'
         # self.num_2D_plots = 1
 
 
+
         self.title_str = ''
 
         tab_height = '600px'
         tab_height = '500px'
-        tab_height = '1000px'
         constWidth = '180px'
         constWidth2 = '150px'
         tab_layout = Layout(width='900px',   # border='2px solid black',
@@ -206,7 +197,6 @@ class SubstrateTab(object):
         svg_plot_size = '900px'
         plot_area_width = '1500px'
         plot_area_height = '900px'
-        plot_area_height = '1000px'
         self.i_plot.layout.width = plot_area_width 
         self.i_plot.layout.height = plot_area_height 
 
@@ -228,9 +218,7 @@ class SubstrateTab(object):
         # cells_vbox=VBox([self.max_frames, hb1], layout=Layout(width='350px',border='1px solid black',))
         cells_vbox=VBox([self.max_frames, hb1], layout=Layout(width='320px'))
         #--------------------------
-        self.substrates_toggle = Checkbox(description='Substrates', 
-            disabled = True, 
-            value=True, style = {'description_width': 'initial'} )
+        self.substrates_toggle = Checkbox(description='Substrates', style = {'description_width': 'initial'})
 
         # self.field_min_max = {'assembled_virion':[0.,1.,False]  }
         # hacky I know, but make a dict that's got (key,value) reversed from the dict in the Dropdown below
@@ -273,9 +261,8 @@ class SubstrateTab(object):
         # analysis_label = Label(value='--Extra analysis--')
 
         self.analysis_data_toggle = Checkbox(
-            description='3 cell 2D plots',
+            description='Extra analysis',
             disabled=False,
-            value=True,
             style = {'description_width': 'initial'},
             layout=Layout(width='130px', )  #  border='1px solid black',)
         #           layout=Layout(width=constWidth2),
@@ -311,16 +298,14 @@ class SubstrateTab(object):
         #     layout=Layout(width='160px', ) )
 
         self.analysis_data_choice = Dropdown(
-            options={'cells 1-3':0},
-            # options={'live,infected,dead':0, 'Mac,Neut,CD8,DC,CD4,Fib':1, 'viral load':2, 'lymph:DC,TC':3, 'lymph:Th1,Th2':4},
+            options={'live,infected,dead':0, 'Mac,Neut,CD8,DC,CD4,Fib':1, 'viral load':2, 'lymph:DC,TC':3, 'lymph:Th1,Th2':4},
             # options=['live,infected,dead', 'Mac,Neut,CD8,DC,CD4,Fib', 'viral load', 'lymph:DC,TC', 'lymph:Th1,Th2'],
             value=0,
             disabled = True,
             #     description='Field',
         #    layout=Layout(width='150px')
         )
-        # self.analysis_data_choice_y = {0:[False,0.,1.], 1:[False,0.,1.], 2:[False,0.,1.], 3:[False,0.,1.], 4:[False,0.,1.]} 
-        self.analysis_data_choice_y = {0:[False,0.,1.]} 
+        self.analysis_data_choice_y = {0:[False,0.,1.], 1:[False,0.,1.], 2:[False,0.,1.], 3:[False,0.,1.], 4:[False,0.,1.]} 
 
 #         self.analysis_data_choice = RadioButtons(
 #             options=['live,infected,dead', 'Mac,Neut,CD8,DC,CD4,Fib', 'viral load', 'lymph node dynamics'],
@@ -574,8 +559,7 @@ class SubstrateTab(object):
         help_label = Label('select slider: drag or left/right arrows')
 
         # analysis_data_hbox = HBox([analysis_data_vbox1, VBox([self.analysis_data_choice, y_range_box, self.analysis_data_wait]), ])
-        # analysis_data_hbox = HBox([analysis_data_vbox1, VBox([self.analysis_data_choice,  self.analysis_data_wait]), ])
-        analysis_data_hbox = HBox([analysis_data_vbox1, VBox([ self.analysis_data_wait]), ])
+        analysis_data_hbox = HBox([analysis_data_vbox1, VBox([self.analysis_data_choice,  self.analysis_data_wait]), ])
 
         controls_box = HBox([cells_vbox, substrate_vbox, analysis_data_hbox], justify_content='center')  # vs. 'flex-start   , layout=Layout(width='900px'))
 
@@ -614,8 +598,25 @@ class SubstrateTab(object):
             self.yval2 = np.empty([1])
             self.yval3 = np.empty([1])
 
+            self.yval4 = np.empty([1])
+            self.yval5 = np.empty([1])
+            self.yval6 = np.empty([1])
+            self.yval7 = np.empty([1])
+            self.yval8 = np.empty([1])
+            self.yval9 = np.empty([1])
+
+            self.yval10 = np.empty([1])
+
+            self.yval11 = np.empty([1])
+            self.yval12 = np.empty([1])
+            self.yval13 = np.empty([1])
+            self.yval14 = np.empty([1])
+
             # No longer used(?) since the manual 'Update' of analyses
             self.analysis_data_set1 = False  # live, infected, dead
+            self.analysis_data_set2 = False  # Mac, Neut, CD8, etc
+            self.analysis_data_set3 = False  # viral load
+            self.analysis_data_set4 = False  # lymph node dynamics
 
             self.analysis_data_toggle.value = False
         self.analysis_data_choice.disabled = bool_val
@@ -635,11 +636,10 @@ class SubstrateTab(object):
             return
 
         # No longer used since 'Update' button (I think)
-        self.analysis_data_set1 = False  # cells 1-3
-        # self.analysis_data_set1 = False  # live, infected, dead
-        # self.analysis_data_set2 = False  # mac, neut, cd8
-        # self.analysis_data_set3 = False  # viral load
-        # self.analysis_data_set4 = False  # lymph node dynamics
+        self.analysis_data_set1 = False  # live, infected, dead
+        self.analysis_data_set2 = False  # mac, neut, cd8
+        self.analysis_data_set3 = False  # viral load
+        self.analysis_data_set4 = False  # lymph node dynamics
 
         xml_root = tree.getroot()
         self.field_min_max = {}
@@ -648,7 +648,6 @@ class SubstrateTab(object):
         uep = xml_root.find('.//variables')
         comment_str = ""
         field_idx = 0
-
         if (uep):
             for elm in uep.findall('variable'):
                 # print("-----> ",elm.attrib['name'])
@@ -781,8 +780,8 @@ class SubstrateTab(object):
             if full_xml_filename.is_file():
                 tree = ET.parse(full_xml_filename)  # this file cannot be overwritten; part of tool distro
                 xml_root = tree.getroot()
-                # print("substrates.py: updates(): full_xml_filename = ", full_xml_filename )
-                # print('   xml_root.find(".//SVG//interval").text) = ', xml_root.find(".//SVG//interval").text)
+                print("substrates.py: updates(): full_xml_filename = ", full_xml_filename )
+                print('   xml_root.find(".//SVG//interval").text) = ', xml_root.find(".//SVG//interval").text)
                 tmpval = float(xml_root.find(".//SVG//interval").text)
                 # self.svg_delta_t = int(xml_root.find(".//SVG//interval").text)
                 self.svg_delta_t = int(tmpval)
@@ -972,44 +971,89 @@ class SubstrateTab(object):
             # print("#1 self.xval=",self.xval)
         else:
             print("Warning: xname != self.tname")
-        voxel_size = mcds[0].data['mesh']['voxels']['volumes'][0]
-        self.analysis_data_wait.value = 'compute 1-3...'
-        # print(np.array( [(mcds[idx].data['continuum_variables']['chemical_A'])  for idx in range(ds_count)] ).astype(float))
-        # self.yval1 = np.array( [np.floor(mcds[idx].data['discrete_cells']['internal_chemical_A']).sum()  for idx in range(ds_count)] ).astype(int)
-        self.yval1 = np.array( [(mcds[idx].data['discrete_cells']['internal_chemical_A'] )  for idx in range(ds_count)] ).astype(float)
-        
+        # elif xname in discrete_cells_names:
+        #     self.xval = np.array([mcds[i].data['discrete_cells'][xname].sum() for i in range(ds_count)])
+        # else:
+        #     if xname == 'susceptible_cells':
+        #         self.xval = np.array([(mcds[i].data['discrete_cells']['assembled_virion'] <= 1).sum() for i in range(ds_count)])
+        #         + np.array([(mcds[i].data['discrete_cells']['cycle_model'] < 6).sum() for i in range(ds_count)])
+        #     elif xname == 'infected_cells':
+        #         self.xval = np.array([(mcds[i].data['discrete_cells']['assembled_virion'] > 1).sum() for i in range(ds_count)]) \
+        #         + np.array([(mcds[i].data['discrete_cells']['cycle_model'] < 6).sum() for i in range(ds_count)])
+        #     elif xname == 'dead_cells':
+        #         self.xval = np.array([len(mcds[0].data['discrete_cells']['ID']) - len(mcds[i].data['discrete_cells']['ID']) for i in range(ds_count)]) \
+        #         + np.array([(mcds[i].data['discrete_cells']['cycle_model'] >= 6).sum() for i in range(ds_count)])
+
+
+        # print('analysis_data_choice = ',self.analysis_data_choice.value)
+
+        # if 'live' in self.analysis_data_choice.value:  # live,infected,dead
+        #     if (self.analysis_data_set1 == False):
+
+        self.analysis_data_wait.value = 'compute 1 of 5 ...'
+
+        # count epi cells still alive 
+        self.yval1 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 1) & (mcds[idx].data['discrete_cells']['cycle_model'] < 100) == True)) for idx in range(ds_count)] )
+
+        # count epi cells infected 
+        self.yval2 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 1) & (mcds[idx].data['discrete_cells']['virion'] > 1.) == True)) for idx in range(ds_count)] )
+        # print('self.yval2=',self.yval2)
+
+        # count epi cells dead 
+        self.yval3 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 1) & (mcds[idx].data['discrete_cells']['cycle_model'] >= 100) == True)) for idx in range(ds_count)] )
+        # print('self.yval3=',self.yval3)
+
         self.analysis_data_set1 = True 
-        self.yval1 = self.yval1[:,0]
-        
-        self.yval_ext1 = np.array( [(mcds[idx].data['continuum_variables']['chemical_A']['data'] * voxel_size).sum()  for idx in range(ds_count)] ).astype(float)
-        self.yval_tot1 = self.yval1 + self.yval_ext1
-
-       # print('int= ',self.yval1[:,0].shape)
-       # print('ext= ',self.yval_ext1.shape)
-       # print('total= ',self.yval_tot1)
-        #print('extra= ',self.yval_ext1.shape)
-        
-        # print('yval1 = ',self.yval1)
-        # print('yval1[0,;,:] = ',self.yval1[0,:,:])
-        # print('yval1.shape = ',self.yval1.shape)
 
 
-        self.yval2 = np.array( [(mcds[idx].data['discrete_cells']['internal_chemical_B'])  for idx in range(ds_count)] ).astype(float)
+        # elif 'Mac' in self.analysis_data_choice.value:  # mac,neut,cd8,DC,cd4,Fib
+        #     if (self.analysis_data_set2 == False):
+                # count Macs
+                # self.yval4 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 4) == True)) for idx in range(ds_count)] )
+        self.analysis_data_wait.value = 'compute 2 of 5 ...'
+        self.yval4 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 4) & (mcds[idx].data['discrete_cells']['cycle_model'] < 100.) == True)) for idx in range(ds_count)] )
+
+        # count Neuts
+        # self.yval5 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 5) == True)) for idx in range(ds_count)] )
+        self.yval5 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 5) & (mcds[idx].data['discrete_cells']['cycle_model'] < 100.) == True)) for idx in range(ds_count)] )
+
+        # count CD8
+        self.yval6 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 3) & (mcds[idx].data['discrete_cells']['cycle_model'] < 100.) == True)) for idx in range(ds_count)] )
+
+        # count DC
+        self.yval7 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 6) & (mcds[idx].data['discrete_cells']['cycle_model'] < 100.) == True)) for idx in range(ds_count)] )
+
+        # count CD4
+        self.yval8 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 7) & (mcds[idx].data['discrete_cells']['cycle_model'] < 100.) == True)) for idx in range(ds_count)] )
+
+        # count Fibroblasts
+        self.yval9 = np.array( [(np.count_nonzero((mcds[idx].data['discrete_cells']['cell_type'] == 8) & (mcds[idx].data['discrete_cells']['cycle_model'] < 100.) == True)) for idx in range(ds_count)] )
+
         self.analysis_data_set2 = True 
-        # print('yval2 = ',self.yval2)
-        self.yval2 = self.yval2[:,1]
-
-        self.yval_ext2 = np.array( [(mcds[idx].data['continuum_variables']['chemical_B']['data'] * voxel_size).sum()  for idx in range(ds_count)] ).astype(float)
-        self.yval_tot2 = self.yval2 + self.yval_ext2
 
 
-        self.yval3 = np.array( [(mcds[idx].data['discrete_cells']['internal_chemical_C'])  for idx in range(ds_count)] ).astype(float)
+        self.analysis_data_wait.value = 'compute 3 of 5 ...'
+        # elif 'load' in self.analysis_data_choice.value:  # viral load
+        #     if (self.analysis_data_set3 == False):
+                # compute viral load in epi cells
+                # self.yval10 = np.array( [np.where(mcds[idx].data['discrete_cells']['cell_type'] == 1) & np.floor(mcds[idx].data['discrete_cells']['assembled_virion']).sum()  for idx in range(ds_count)] )
+        self.yval10 = np.array( [np.floor(mcds[idx].data['discrete_cells']['assembled_virion']).sum()  for idx in range(ds_count)] ).astype(int)
+
         self.analysis_data_set3 = True 
-        # print('yval3 = ',self.yval3)
-        self.yval3 = self.yval3[:,2]
-        
-        self.yval_ext3 = np.array( [(mcds[idx].data['continuum_variables']['chemical_C']['data'] * voxel_size).sum()  for idx in range(ds_count)] ).astype(float)
-        self.yval_tot3 = self.yval3 + self.yval_ext3
+
+
+        self.analysis_data_wait.value = 'compute 4 and 5 ...'
+        # elif 'lymph' in self.analysis_data_choice.value:  # lymph node dynamics
+        #     if (self.analysis_data_set4 == False):
+        lymph_data = np.genfromtxt('dm_tc.dat', delimiter=' ')
+        self.yval11 = lymph_data[:,0]
+        # print('lymph data: yval11 = ',self.yval11)
+        self.yval12 = lymph_data[:,1]
+        self.yval13 = lymph_data[:,2]
+        self.yval14 = lymph_data[:,3]
+
+        self.analysis_data_set4 = True 
+
 
         # self.analysis_data_wait.value = ''
         self.i_plot.update()
@@ -1031,14 +1075,23 @@ class SubstrateTab(object):
         self.ax1.get_yaxis().set_visible(False)
         self.ax1.axis('off')
 
-        self.ax2.plot([0.], [0.], color='white',marker='.')  # hack empty
-        self.ax3.plot([0.], [0.], color='white',marker='.')  # hack empty
+        self.ax1_lymph_TC.plot([0.], [0.], color='white',marker='.')  # hack empty
+        # self.ax1.clf()
+        self.ax1_lymph_TC.get_xaxis().set_visible(False)
+        self.ax1_lymph_TC.get_yaxis().set_visible(False)
+        self.ax1_lymph_TC.axis('off')
+
+        self.ax1_lymph_TH2.plot([0.], [0.], color='white',marker='.')  # hack empty
+        # self.ax1.clf()
+        self.ax1_lymph_TH2.get_xaxis().set_visible(False)
+        self.ax1_lymph_TH2.get_yaxis().set_visible(False)
+        self.ax1_lymph_TH2.axis('off')
+
 
     #------------------------------------------------------------
     # Called from 'plot_substrate' if the checkbox is ON
     # def plot_analysis_data(self, xname, yname_list, t):
-    # def plot_analysis_data(self, xname, yname_list, substrate_frame_num):
-    def plot_analysis_data(self, substrate_frame_num):
+    def plot_analysis_data(self, xname, yname_list, substrate_frame_num):
         # print("---------- plot_analysis_data()")
         # global current_idx, axes_max
         global current_frame
@@ -1048,62 +1101,67 @@ class SubstrateTab(object):
         # print('plot_analysis_data: self.output_dir=',self.output_dir)
 
         #-----------  line plots for extra analysis ---------------------
-        # self.ax1_lymph_TC.get_yaxis().set_visible(False)
-        # self.ax1_lymph_TC.axis('off')
+        self.ax1_lymph_TC.get_yaxis().set_visible(False)
+        self.ax1_lymph_TC.axis('off')
 
-        # self.ax1_lymph_TH2.get_yaxis().set_visible(False)
-        # self.ax1_lymph_TH2.axis('off')
+        self.ax1_lymph_TH2.get_yaxis().set_visible(False)
+        self.ax1_lymph_TH2.axis('off')
 
         if self.analysis_data_choice.value == 0:  # live,infected,dead
-            color_int = 'tab:red'
-            color_ext = 'tab:blue'
-            color_tot = 'tab:purple'
-            # Chem A Plot
-            p1 = self.ax1.plot(self.xval[1:], self.yval1[1:], label='int chem A', linewidth=3, color = color_int)
-            p4 = self.ax1_extracellular.plot(self.xval[1:], self.yval_ext1[1:], label='ext chem A', linewidth=3, color = color_ext)
-            p5 = self.ax1_extracellular.plot(self.xval[1:], self.yval_tot1[1:], label ='total chem A', linewidth=3, color = color_tot)
-            self.ax1_extracellular.set_ylim(min(self.yval_ext1[1:]-2, default='EMPTY'), max(self.yval_tot1[1:]+2, default='EMPTY'))
-            y_fmt = tick.FormatStrFormatter('%.f')
-            self.ax1_extracellular.yaxis.set_major_formatter(y_fmt)
-            self.ax1.tick_params(axis='y', labelcolor = color_int)
-            self.ax1_extracellular.tick_params(axis='y', labelcolor = color_ext)
-            lines1 = p1 + p4 + p5
-            labels1 = [l.get_label() for l in lines1]
-            self.ax1.legend(lines1, labels1, loc= 8)
-            
-            # Chem B Plot
-            p2 = self.ax2.plot(self.xval[1:], self.yval2[1:], label='int chem B', linewidth=3, color = color_int)
-            p6 = self.ax2_extracellular.plot(self.xval[1:], self.yval_ext2[1:], label='ext chem B', linewidth=3, color = color_ext)
-            p7 = self.ax2_extracellular.plot(self.xval[1:], self.yval_tot2[1:], label ='total chem B', linewidth=3, color = color_tot)
-            self.ax2_extracellular.set_ylim(min(self.yval_ext2[1:]-2, default='EMPTY'), max(self.yval_tot2[1:]+2, default='EMPTY'))
-            #self.ax1.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-            y_fmt = tick.FormatStrFormatter('%.f')
-            self.ax2_extracellular.yaxis.set_major_formatter(y_fmt)            
-            self.ax2.tick_params(axis='y', labelcolor = color_int)
-            self.ax2_extracellular.tick_params(axis='y', labelcolor = color_ext)
-            lines2 = p2 + p6 + p7
-            labels2 = [l.get_label() for l in lines2]
-            self.ax2.legend(lines2, labels2, loc= 8)
-            
-            # Chem C Plot
-            p3 = self.ax3.plot(self.xval[1:], self.yval3[1:], label='int chem C', linewidth=3, color = color_int)
-            p8 = self.ax3_extracellular.plot(self.xval[1:], self.yval_ext3[1:], label='ext chem C', linewidth=3, color = color_ext)
-            p9 = self.ax3_extracellular.plot(self.xval[1:], self.yval_tot3[1:], label ='total chem C', linewidth=3, color = color_tot)
-            self.ax3_extracellular.set_ylim(min(self.yval_ext3[1:]-2, default='EMPTY'), max(self.yval_tot3[1:]+2, default='EMPTY'))
-            #self.ax1.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-            y_fmt = tick.FormatStrFormatter('%.f')
-            self.ax3_extracellular.yaxis.set_major_formatter(y_fmt)    
-            self.ax3.tick_params(axis='y', labelcolor = color_int)
-            self.ax3_extracellular.tick_params(axis='y', labelcolor = color_ext)
-            lines3 = p3 + p8 + p9
-            labels3 = [l.get_label() for l in lines3]
-            self.ax3.legend(lines3, labels3, loc= 8)            
-            
-            
+            p1 = self.ax1.plot(self.xval, self.yval1, label='live', linewidth=3)
+            p2 = self.ax1.plot(self.xval, self.yval2, label='infected', linewidth=3)
+            p3 = self.ax1.plot(self.xval, self.yval3, label='dead', linewidth=3)
+
+        elif self.analysis_data_choice.value == 1:  # Mac,Neut,CD8,DC,CD4,Fib
+            p1 = self.ax1.plot(self.xval, self.yval4, label='Mac', linewidth=3, color=self.mac_color)
+            p2 = self.ax1.plot(self.xval, self.yval5, linestyle='dashed', label='Neut', linewidth=3, color=self.neut_color)
+            p3 = self.ax1.plot(self.xval, self.yval6, label='CD8', linewidth=3, color=self.cd8_color)
+            p4 = self.ax1.plot(self.xval, self.yval7, linestyle='dashed', label='DC', linewidth=3, color=self.dc_color)
+            # print('plot_analysis_data(): yval6=',self.yval6)
+            # print('plot_analysis_data(): yval7=',self.yval7)
+            p5 = self.ax1.plot(self.xval, self.yval8, label='CD4', linewidth=3, color=self.cd4_color)
+            p6 = self.ax1.plot(self.xval, self.yval9, linestyle='dashed',  label='Fib', linewidth=3, color=self.fib_color) # dashes=[6,2],
+            # print('plot_analysis_data(): yval9=',self.yval9)
+
+        elif self.analysis_data_choice.value == 2:  # viral load
+            if len(self.xval) > len(self.yval10):
+                print('problem: len(xval) >= len(yval10)',self.xval,self.yval10 )
+                pass
+            else:
+                p7 = self.ax1.plot(self.xval, self.yval10, linewidth=3, color=self.viral_load_color)
+
+        elif self.analysis_data_choice.value == 3:  # lymph: DC,TC
+            self.ax1_lymph_TC.get_yaxis().set_visible(True)
+            self.ax1_lymph_TC.axis('on')
+            if len(self.xval) < len(self.yval11):
+                # print("lymph unequal x,y: xval=",self.xval, ", yval=",self.yval11)
+                # print("lymph xval < yval11")
+                # p8 = self.ax1.plot(self.xval, self.yval11[:len(self.xval)], label='DC', linewidth=3, color=self.lymph_DC_color)
+                p8 = self.ax1.plot(self.xval, self.yval11[:len(self.xval)], linewidth=3, color=self.lymph_DC_color)
+                p9 = self.ax1_lymph_TC.plot(self.xval, self.yval12[:len(self.xval)], linewidth=3, color=self.lymph_TC_color)
+            else:
+                p8 = self.ax1.plot(self.xval, self.yval11, linewidth=3, color=self.lymph_DC_color)
+                p9 = self.ax1_lymph_TC.plot(self.xval, self.yval12,  linewidth=3, color=self.lymph_TC_color)
+
+        elif self.analysis_data_choice.value == 4:  # lymph: Th1,Th2
+            self.ax1_lymph_TH2.get_yaxis().set_visible(True)
+            self.ax1_lymph_TH2.axis('on')
+            if len(self.xval) < len(self.yval13):
+                p10 = self.ax1.plot(self.xval, self.yval13[:len(self.xval)], linewidth=3, color=self.lymph_DC_color)
+                p11 = self.ax1_lymph_TH2.plot(self.xval, self.yval14[:len(self.xval)], linewidth=3, color=self.lymph_TC_color)
+            else:
+                p10 = self.ax1.plot(self.xval, self.yval13, linewidth=3, color=self.lymph_DC_color)
+                p11 = self.ax1_lymph_TH2.plot(self.xval, self.yval14,  linewidth=3, color=self.lymph_TC_color)
+
+        # print('xval=',xval)  # [   0.   60.  120. ...
+        # print('yval=',yval)  # [2793 2793 2793 ...
+        # print('t=',t)
+
+
         #-----------  markers (circles) on top of line plots: tracking Cells/Substrates plots ---------------------
         # if (t >= 0):
         xoff= self.xval.max() * .01   # should be a % of axes range
-        fsize = 12
+        fsize=12
         # kdx = self.substrate_frame
         kdx = substrate_frame_num
         # kdx = len(self.xval) - 1
@@ -1117,42 +1175,111 @@ class SubstrateTab(object):
             pass
         elif (substrate_frame_num >= 0 and len(self.xval) > 1):
             # print('self.xval=',self.xval)  # [   0.   60.  120. ...
-            if self.analysis_data_choice.value == 0:   # cells 1-3
-                # Chem A
-                self.ax1.plot(self.xval[kdx+1], self.yval1[kdx+1], p1[-1].get_color(), marker='o', markersize=12)
-                self.ax1.ticklabel_format(useOffset=False)
-                self.ax1_extracellular.plot(self.xval[kdx+1], self.yval_ext1[kdx+1], p4[-1].get_color(), marker='o', markersize=12)
-                self.ax1_extracellular.plot(self.xval[kdx+1], self.yval_tot1[kdx+1], p5[-1].get_color(), marker='o', markersize=12)
-                
-                # Chem B
-                self.ax2.plot(self.xval[kdx+1], self.yval2[kdx+1], p2[-1].get_color(), marker='o', markersize=12)
-                self.ax2.ticklabel_format(useOffset=False)
-                self.ax2_extracellular.plot(self.xval[kdx+1], self.yval_ext2[kdx+1], p6[-1].get_color(), marker='o', markersize=12)
-                self.ax2_extracellular.plot(self.xval[kdx+1], self.yval_tot2[kdx+1], p7[-1].get_color(), marker='o', markersize=12)                
-                
 
-                # Chem C
-                self.ax3.plot(self.xval[kdx+1], self.yval3[kdx+1], p3[-1].get_color(), marker='o', markersize=12)
-                self.ax3.ticklabel_format(useOffset=False)
-                self.ax3_extracellular.plot(self.xval[kdx+1], self.yval_ext3[kdx+1], p8[-1].get_color(), marker='o', markersize=12)
-                self.ax3_extracellular.plot(self.xval[kdx+1], self.yval_tot3[kdx+1], p9[-1].get_color(), marker='o', markersize=12) 
+            if self.analysis_data_choice.value == 0:   # live,infected,dead
+                self.ax1.plot(self.xval[kdx], self.yval1[kdx], p1[-1].get_color(), marker='o', markersize=12)
+                self.ax1.plot(self.xval[kdx], self.yval2[kdx], p2[-1].get_color(), marker='o', markersize=12)
+                self.ax1.plot(self.xval[kdx], self.yval3[kdx], p3[-1].get_color(), marker='o', markersize=12)
 
-                ymax= max(int(self.yval1.max()),int(self.yval2.max()),int(self.yval3.max())) 
+                # label = "{:d}".format(self.yval1[self.substrate_frame]), 
+                # self.ax1.annotate(str(self.yval1[self.substrate_frame]), (self.xval[self.substrate_frame]+xoff,self.yval1[self.substrate_frame]+yoff) )
+                ymax= max(int(self.yval1.max()),int(self.yval2.max()),int(self.yval3.max())) # should be a % of axes range
                 yoff= ymax * .01   # should be a % of axes range
 
-        self.ax1.set_xlabel('time (min)', fontsize=self.axis_label_fontsize)
-        
-        
+                self.ax1.text( self.xval[kdx]+xoff, self.yval1[kdx]+yoff, str(self.yval1[kdx]), fontsize=fsize)
+                self.ax1.text( self.xval[kdx]+xoff, self.yval2[kdx]+yoff, str(self.yval2[kdx]), fontsize=fsize)
+                self.ax1.text( self.xval[kdx]+xoff, self.yval3[kdx]+yoff, str(self.yval3[kdx]), fontsize=fsize)
+                 
+            elif self.analysis_data_choice.value == 1:  # Mac,Neut,CD8,DC,CD4,Fib
+                self.ax1.plot(self.xval[kdx], self.yval4[kdx], p1[-1].get_color(), marker='o', markersize=12)
+                self.ax1.plot(self.xval[kdx], self.yval5[kdx], p2[-1].get_color(), marker='o', markersize=12)
+                self.ax1.plot(self.xval[kdx], self.yval6[kdx], p3[-1].get_color(), marker='o', markersize=12)
+                self.ax1.plot(self.xval[kdx], self.yval7[kdx], p4[-1].get_color(), marker='o', markersize=12)
+                self.ax1.plot(self.xval[kdx], self.yval8[kdx], p5[-1].get_color(), marker='o', markersize=12)
+                self.ax1.plot(self.xval[kdx], self.yval9[kdx], p6[-1].get_color(), marker='o', markersize=12)
 
+                # label markers
+                ymax= max(int(self.yval4.max()), int(self.yval5.max()), int(self.yval6.max()), int(self.yval7.max()), int(self.yval8.max()), int(self.yval9.max()) ) # should be a % of axes range
+                yoff= ymax * .01   # should be a % of axes range
+                self.ax1.text( self.xval[kdx]+xoff, self.yval4[kdx]+yoff, str(self.yval4[kdx]), fontsize=fsize)
+                self.ax1.text( self.xval[kdx]+xoff, self.yval5[kdx]+yoff, str(self.yval5[kdx]), fontsize=fsize)
+                self.ax1.text( self.xval[kdx]+xoff, self.yval6[kdx]+yoff, str(self.yval6[kdx]), fontsize=fsize)
+                self.ax1.text( self.xval[kdx]+xoff, self.yval7[kdx]+yoff, str(self.yval7[kdx]), fontsize=fsize)
+                self.ax1.text( self.xval[kdx]+xoff, self.yval8[kdx]+yoff, str(self.yval8[kdx]), fontsize=fsize)
+                self.ax1.text( self.xval[kdx]+xoff, self.yval9[kdx]+yoff, str(self.yval9[kdx]), fontsize=fsize)
+
+            elif self.analysis_data_choice.value == 2:  # viral load
+                # self.ax1.plot(self.xval[kdx], self.yval10[kdx], p7[-1].get_color(), marker='o', markersize=12)
+                self.ax1.plot(self.xval[kdx], self.yval10[kdx], color='black', marker='o', markersize=12)
+
+                # ymax= int(self.yval10.max())
+                # yoff= ymax * .01   # should be a % of axes range
+                # self.ax1.text( self.xval[kdx]+xoff, self.yval10[kdx]+yoff, str(self.yval10[kdx]), fontsize=fsize)
+                # self.ax1_lymph_TC.text( self.xval[kdx]+xoff, self.yval11[kdx]+yoff, str(self.yval11[kdx]), fontsize=fsize)
+
+            elif self.analysis_data_choice.value == 3: # lymph:DC,TC 
+                self.ax1.plot(         self.xval[kdx], self.yval11[kdx], p8[-1].get_color(), marker='o', markersize=12)
+                self.ax1_lymph_TC.plot(self.xval[kdx], self.yval12[kdx], p9[-1].get_color(), marker='o', markersize=12)
+                # self.ax1.plot(self.xval[self.substrate_frame], self.yval11[self.substrate_frame], p8[-1].get_color(), marker='o', markersize=12)
+
+                ymax= self.yval11.max()
+                yoff= ymax * .01   # should be a % of axes range
+                sval = '%.2f' % self.yval11[self.substrate_frame]
+                # self.ax1.text( self.xval[self.substrate_frame]+xoff, self.yval11[self.substrate_frame]+yoff, sval, fontsize=fsize)
+
+                ymax= self.yval12.max()
+                yoff= ymax * .01   # should be a % of axes range
+                sval = '%.2f' % self.yval12[self.substrate_frame]
+                # self.ax1_lymph_TC.text( self.xval[self.substrate_frame]+xoff, self.yval12[self.substrate_frame]+yoff, sval, fontsize=fsize)
+
+            elif self.analysis_data_choice.value == 4: # lymph:Th1,Th2 
+                # print('kdx=',kdx,', yval14[kdx]=',self.yval14[kdx])
+                self.ax1.plot(          self.xval[kdx], self.yval13[kdx], p10[-1].get_color(), marker='o', markersize=12)
+                self.ax1_lymph_TH2.plot(self.xval[kdx], self.yval14[kdx], p11[-1].get_color(), marker='o', markersize=12)
+
+                ymax= self.yval13.max()
+                yoff= ymax * .01   # should be a % of axes range
+                sval = '%.2f' % self.yval13[self.substrate_frame]
+                # self.ax1.text( self.xval[self.substrate_frame]+xoff, self.yval13[self.substrate_frame]+yoff, sval, fontsize=fsize)
+
+                ymax= self.yval14.max()
+                yoff= ymax * .01   # should be a % of axes range
+                sval = '%.2f' % self.yval14[self.substrate_frame]
+                # self.ax1_lymph_TH2.text( self.xval[self.substrate_frame]+xoff, self.yval14[self.substrate_frame]+yoff, sval, fontsize=fsize)
+
+
+        #-------- Provide a legend if necessary
+        # if 'load' in self.analysis_data_choice.value:  # no legend for viral load
+        if self.analysis_data_choice.value == 2:  # no legend for viral load
+            pass
+        # elif 'lymph' in self.analysis_data_choice.value:  
+        elif (self.analysis_data_choice.value == 3) or (self.analysis_data_choice.value == 4):  
+            pass
+        else:  
+            self.ax1.legend(loc='center left', prop={'size': 15})
+
+        if xname == self.tname:
+            self.ax1.set_xlabel('time (min)', fontsize=self.axis_label_fontsize)
+        else:
+            self.ax1.set_xlabel('total ' * (xname != self.tname) + xname)
 #        self.ax1.set_ylabel('total ' + (yname_list[0] if len(yname_list) == 1 else ', '.join(yname_list)))
 
-        # if self.analysis_data_choice.value == 0:   # cells 1-3
-        #     self.ax1.set_ylabel('chem A', fontsize=self.axis_label_fontsize)
-        # elif self.analysis_data_choice.value == 1:   # Mac, Neut, etc
-        #     self.ax1.set_ylabel('# of cells', fontsize=self.axis_label_fontsize)
-        # # elif 'load' in self.analysis_data_choice.value:  # viral load
-        # elif self.analysis_data_choice.value == 2:  # viral load 
-        #     self.ax1.set_ylabel('viral load', fontsize=self.axis_label_fontsize)
+        if self.analysis_data_choice.value == 0:   # live, infected, dead
+            self.ax1.set_ylabel('# of epithelial cells', fontsize=self.axis_label_fontsize)
+        elif self.analysis_data_choice.value == 1:   # Mac, Neut, etc
+            self.ax1.set_ylabel('# of cells', fontsize=self.axis_label_fontsize)
+        # elif 'load' in self.analysis_data_choice.value:  # viral load
+        elif self.analysis_data_choice.value == 2:  # viral load 
+            self.ax1.set_ylabel('viral load', fontsize=self.axis_label_fontsize)
+        # elif 'lymph' in self.analysis_data_choice.value:  
+        elif (self.analysis_data_choice.value == 3):  # lymph: DC,TC
+            self.ax1.set_ylabel('DC', fontsize=self.axis_label_fontsize, color=self.lymph_DC_color)
+            self.ax1_lymph_TC.set_ylabel('TC', fontsize=self.axis_label_fontsize, color=self.lymph_TC_color)
+            self.ax1_lymph_TC.tick_params(axis='y', colors=self.lymph_TC_color)
+        elif (self.analysis_data_choice.value == 4):  # lymph: Th1,Th2
+            self.ax1.set_ylabel('Th1', fontsize=self.axis_label_fontsize, color=self.lymph_DC_color)
+            self.ax1_lymph_TH2.set_ylabel('Th2', fontsize=self.axis_label_fontsize, color=self.lymph_TC_color)
+            self.ax1_lymph_TH2.tick_params(axis='y', colors=self.lymph_TC_color)
 
         max_time_min = int(self.xval[-1])
         # print('self.xval =',self.xval)
@@ -1162,9 +1289,7 @@ class SubstrateTab(object):
         num_min = int(max_time_min % 60)
         title_str = 'Updated to ' + '%dd, %dh %dm'%(num_days,num_hours,num_min)
         if (self.analysis_data_plotted):
-            self.ax1.set_title("Left cell: internal_chemical_A")
-            self.ax2.set_title("Middle cell: internal_chemical_B")
-            self.ax3.set_title("Right cell: internal_chemical_C")
+            self.ax1.set_title(title_str)
         else:
             self.ax1.set_xticklabels([])
             self.ax1.set_yticklabels([])
@@ -1172,9 +1297,7 @@ class SubstrateTab(object):
         # self.ax1.set_legend()
         # self.ax1.tight_layout()
         # self.ax1.show()
-        
-        
-        
+
     #---------------------------------------------------------------------------
     def circles(self, x, y, s, c='b', vmin=None, vmax=None, **kwargs):
         """
@@ -1458,8 +1581,6 @@ class SubstrateTab(object):
         #         plt.plot(xtracks[0:frame],ytracks[0:frame],  linewidth=5)
 
 
-
-
     #---------------------------------------------------------------------------
     # assume "frame" is cell frame #, unless Cells is togggled off, then it's the substrate frame #
     # def plot_substrate(self, frame, grid):
@@ -1491,47 +1612,9 @@ class SubstrateTab(object):
                 # self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(self.figsize_width_substrate + self.figsize_width_2Dplot, self.figsize_height_substrate))
                 # self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(31, self.figsize_height_substrate), gridspec_kw={'width_ratios': [1.35, 1]})
                 # self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(31, 13), gridspec_kw={'width_ratios': [1.35, 1]})
-
-                # Instead of the typical 'plt.figure()', do this for a multi-plot arrangement:
-                #   plt.subplots(# rows, # cols, ...)
-
-                #  -- following used by pc4covid19:
-                # self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(34, 15), gridspec_kw={'width_ratios': [1.5, 1]})
-
-
-                # Furkan?
-                # self.fig, (self.ax0, self.ax1, self.ax2, self.ax3) = plt.subplots(2, 2, figsize=(34, 34), gridspec_kw={'width_ratios': [1.,1.,1.,1.]})
-
-
-                self.fig, ((self.ax0, self.ax1), (self.ax2, self.ax3)) = plt.subplots(2, 2, figsize=(self.plots4_width, self.plots4_height))
-
-                # self.fig = plt.figure(figsize=(24, 12), constrained_layout=True)
-                # widths = [1, 1]
-                # heights = [1, 1]
-                # spec5 = self.fig.add_gridspec(ncols=4, nrows=1, width_ratios=widths,
-                #                         height_ratios=heights)
-                # self.ax0 = self.fig.add_subplot(spec5[0, 0])
-                # label = 'Width: {}\nHeight: {}'.format(widths[col], heights[row])
-                label = 'yipeee  ax0'
-                # self.ax0.annotate(label, (0.1, 0.5), xycoords='axes fraction', va='center')
-
-                # self.ax1 = self.fig.add_subplot(spec5[0, 1])
-                label = 'yipeee  ax1'
-                # self.ax1.annotate(label, (0.1, 0.5), xycoords='axes fraction', va='center')
-
-                # self.ax2 = self.fig.add_subplot(spec5[0, 2])
-                label = 'yipeee  ax2'
-                # self.ax2.annotate(label, (0.1, 0.5), xycoords='axes fraction', va='center')
-
-                # self.ax3 = self.fig.add_subplot(spec5[0, 3])
-                label = 'yipeee  ax3'
-                # self.ax3.annotate(label, (0.1, 0.5), xycoords='axes fraction', va='center')
-                # self.fig, (self.ax0, self.ax1, self.ax2, self.ax3, self.ax4, self.ax5) = plt.subplots(3, 2, figsize=(34, 34), gridspec_kw={'width_ratios': [1.,1.,1.,1.,1.,1.]})
-
-                # Specify 2 different y-axes ranges for the lymph node data plot:
-                # self.ax1_lymph_TC = self.ax1.twinx()
-                # self.ax1_lymph_TH2 = self.ax1.twinx()
-
+                self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(34, 15), gridspec_kw={'width_ratios': [1.5, 1]})
+                self.ax1_lymph_TC = self.ax1.twinx()
+                self.ax1_lymph_TH2 = self.ax1.twinx()
             # else:  # substrates plot, but no 2D plot
             #     print('plot sub:  sub w,h= ',self.figsize_width_substrate,self.figsize_height_substrate)
             #     self.fig, (self.ax0) = plt.subplots(1, 1, figsize=(self.figsize_width_substrate, self.figsize_height_substrate))
@@ -1563,6 +1646,7 @@ class SubstrateTab(object):
             xml_root = tree.getroot()
             mins = round(int(float(xml_root.find(".//current_time").text)))  # TODO: check units = mins
             self.substrate_mins= round(int(float(xml_root.find(".//current_time").text)))  # TODO: check units = mins
+
             hrs = int(mins/60)
             days = int(hrs/24)
             self.title_str = 'substrate: %dd, %dh, %dm' % (int(days),(hrs%24), mins - (hrs*60))
@@ -1581,6 +1665,7 @@ class SubstrateTab(object):
                 pass
 #                xgrid = M[0, :].reshape(self.numy, self.numx)
 #                ygrid = M[1, :].reshape(self.numy, self.numx)
+
             num_contours = 15
             levels = MaxNLocator(nbins=num_contours).tick_values(self.colormap_min.value, self.colormap_max.value)
             contour_ok = True
@@ -1592,8 +1677,6 @@ class SubstrateTab(object):
                     # print('got error on contourf 1.')
             else:    
                 try:
-                    test = M[self.field_index, :].reshape(self.numy,self.numx)
-                    #print ('test = ', test)
                     substrate_plot = self.ax0.contourf(xgrid, ygrid, M[self.field_index, :].reshape(self.numy,self.numx), num_contours, cmap=self.colormap_dd.value)
                 except:
                     contour_ok = False
@@ -1601,83 +1684,29 @@ class SubstrateTab(object):
 
             if (contour_ok):
                 self.ax0.set_title(self.title_str, fontsize=self.fontsize)
-                cbar = self.fig.colorbar(substrate_plot, ax=self.ax0, format = "%.7f")
-                cbar.ax.tick_params(labelsize=12)
+                cbar = self.fig.colorbar(substrate_plot, ax=self.ax0)
+                cbar.ax.tick_params(labelsize=self.fontsize)
 
             self.ax0.set_xlim(self.xmin, self.xmax)
             self.ax0.set_ylim(self.ymin, self.ymax)
-            self.ax1_extracellular = self.ax1.twinx()
-            self.ax2_extracellular = self.ax2.twinx()           
-            self.ax3_extracellular = self.ax3.twinx()            
-            #self.ax1_total_chem = self.ax1.twinx()
-
 
         # Now plot the cells (possibly on top of the substrate)
         if self.cells_toggle.value:
             if not self.substrates_toggle.value:
+                # maybe only show 2nd plot if self.analysis_data_toggle is True
+                # self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(self.figsize_width_svg*2, self.figsize_height_svg))
+                # self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(24, 12))
+                # if self.analysis_data_toggle.value:  # cells (SVG) and 2D plot (no substrate)
+                # if False:  # cells (SVG) and 2D plot (no substrate)
+                #     # self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(20, 10))
+                #     self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(self.figsize_width_svg + self.figsize_width_2Dplot, self.figsize_height_svg))
                 if True:  # cells (SVG), but no 2D plot (and no substrate)
-                    # self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(25, self.figsize_height_substrate), gridspec_kw={'width_ratios': [1.1, 1]})
-
-                    # Furkan?
-                    self.fig, (self.ax0, self.ax1, self.ax2, self.ax3) = plt.subplots(1, 4, figsize=(self.plots4_width, self.plots4_height))
-
-                    # self.fig = plt.figure(figsize=(12, 12), constrained_layout=True)
-                    # widths = [1, 1]
-                    # heights = [1, 1]
-                    # spec5 = self.fig.add_gridspec(ncols=2, nrows=2, width_ratios=widths,
-                    #                         height_ratios=heights)
-                    
-                    # self.ax0 = self.fig.add_subplot(spec5[0, 0])
-                    # label = 'Width: {}\nHeight: {}'.format(widths[col], heights[row])
-                    label = 'yipeee  ax0'
-                    self.ax0.annotate(label, (0.1, 0.5), xycoords='axes fraction', va='center')
-
-                    # self.ax1 = self.fig.add_subplot(spec5[0, 1])
-                    label = 'yipeee  ax1'
-                    self.ax1.annotate(label, (0.1, 0.5), xycoords='axes fraction', va='center')
-
-                    # self.ax2 = self.fig.add_subplot(spec5[1, 0])
-                    label = 'yipeee  ax2'
-                    self.ax2.annotate(label, (0.1, 0.5), xycoords='axes fraction', va='center')
-
-                    # self.ax3 = self.fig.add_subplot(spec5[1, 1])
-                    label = 'yipeee  ax3'
-                    self.ax3.annotate(label, (0.1, 0.5), xycoords='axes fraction', va='center')
-                    # for row in range(2):
-                    #     for col in range(2):
-                    #         ax = self.fig.add_subplot(spec5[row, col])
-                    #         label = 'Width: {}\nHeight: {}'.format(widths[col], heights[row])
-                    #         ax.annotate(label, (0.1, 0.5), xycoords='axes fraction', va='center')
-
-                    # self.fig = plt.figure(constrained_layout=False)
-                    # gs1 = self.fig.add_gridspec(nrows=2, ncols=2, left=0.05, right=0.48, wspace=0.05)
-                    # self.ax0 = self.fig.add_subplot(gs1[:-1, 0])
-                    # self.ax1 = self.fig.add_subplot(gs1[-1, :-1])
-                    # self.ax2 = self.fig.add_subplot(gs1[-1, -1])
-                    # self.ax3 = self.fig.add_subplot(gs1[-1, -1])
-
-                    # self.fig, (self.ax0, self.ax1, self.ax2, self.ax3) = plt.subplots(2, 2, figsize=(34, 34))
-                    # self.fig, (self.ax0, self.ax1, self.ax2, self.ax3) = plt.subplots(2, 2, figsize=(34, 34), gridspec_kw={'width_ratios': [1.,1.,1.,1.]})
-                        # plt.subplots(nrows=3, ncols=2, 
-                    # self.fig, (self.ax0, self.ax1, self.ax2, self.ax3 , self.ax4, self.ax5) = \
-                    # self.fig, (self.ax0, self.ax1, self.ax2) = \
-                    #     plt.subplots(nrows=2, ncols=2, 
-                    #     figsize=(25, self.figsize_height_substrate) ,
-                    #     gridspec_kw={'width_ratios': [0.5,0.5]} )
-                    
-                    # https://matplotlib.org/stable/gallery/subplots_axes_and_figures/subplots_demo.html
-                    # x = np.linspace(0, 2 * np.pi, 100)
-                    # y = np.sin(x ** 2)
-                    # self.fig, axs = plt.subplots(2, 2)
-                    # axs[0, 0].plot(x, y)
-                    # axs[0, 1].plot(x, y, 'tab:orange')
-                    # axs[1, 0].plot(x, -y, 'tab:green')
-                    # axs[1, 1].plot(x, -y, 'tab:red')
-
-
-                    # self.ax1_lymph_TC = self.ax1.twinx()
-                    # self.ax1_lymph_TH2 = self.ax1.twinx()
-
+                # else:  # cells (SVG), but no 2D plot (and no substrate)
+                    # print('plot svg:  svg w,h= ',self.figsize_width_svg,self.figsize_height_svg)
+                    # self.fig, (self.ax0) = plt.subplots(1, 1, figsize=(self.figsize_width_svg, self.figsize_height_svg))
+                    self.fig, (self.ax0, self.ax1) = plt.subplots(1, 2, figsize=(25, self.figsize_height_substrate), gridspec_kw={'width_ratios': [1.1, 1]})
+                    self.ax1_lymph_TC = self.ax1.twinx()
+                    self.ax1_lymph_TH2 = self.ax1.twinx()
 
             self.svg_frame = frame
             # print('plot_svg with frame=',self.svg_frame)
@@ -1690,7 +1719,6 @@ class SubstrateTab(object):
             # self.plot_analysis_data("time", ["assembled_virion"], -1)
             # print('self.substrate_frame = ',self.substrate_frame)
             self.substrate_frame = int(frame / self.modulo)
-            # self.plot_analysis_data("time", ["assembled_virion"], self.substrate_frame)
-            self.plot_analysis_data(self.substrate_frame)
+            self.plot_analysis_data("time", ["assembled_virion"], self.substrate_frame)
         else:
             self.plot_empty_analysis_data()

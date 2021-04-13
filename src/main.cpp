@@ -94,26 +94,31 @@ void update_secr_param_and_ic_int_met()
     {
         if( (*all_cells)[i]->is_out_of_domain == false  )
         {
-          if ( (*all_cells)[i]->type == 1)
-          {
-            std::cout << "TEST" << std::endl;
-            (*all_cells)[i]->phenotype.secretion.uptake_rates[chemical_A_substrate_index] = parameters.doubles( "chemical_A_uptake_rate_coefficient" );
-            (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index] = parameters.doubles( "internal_chemical_A" );
-          }
+            
+            if ( (*all_cells)[i]->type == 1)
+            {
+                //std::cout << "TEST" << std::endl;
+                (*all_cells)[i]->phenotype.secretion.uptake_rates[chemical_A_substrate_index] = parameters.doubles( "chemical_A_uptake_rate_coefficient" );
+                (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index] = parameters.doubles( "internal_chemical_A" );
+            }
           
-          if ( (*all_cells)[i]->type == 2)
-          {
-            (*all_cells)[i]->phenotype.secretion.secretion_rates[chemical_B_substrate_index] = parameters.doubles( "chemical_B_secretion_rate" ); 
-            (*all_cells)[i]->phenotype.secretion.saturation_densities[chemical_B_substrate_index] = parameters.doubles( "chemical_B_saturation_density" );  
-            (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index] = parameters.doubles( "internal_chemical_B" );  
-          }
+            if ( (*all_cells)[i]->type == 2)
+            {
+                (*all_cells)[i]->phenotype.secretion.secretion_rates[chemical_B_substrate_index] = parameters.doubles( "chemical_B_secretion_rate" ); 
+                (*all_cells)[i]->phenotype.secretion.saturation_densities[chemical_B_substrate_index] = parameters.doubles( "chemical_B_saturation_density" );  
+                (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index] = parameters.doubles( "internal_chemical_B" );  
+            }
           
-          if ( (*all_cells)[i]->type == 3)
-          {
-            (*all_cells)[i]->phenotype.secretion.net_export_rates[chemical_C_substrate_index] = parameters.doubles( "chemical_C_secretion_rate" );
-            (*all_cells)[i]->phenotype.secretion.saturation_densities[chemical_C_substrate_index] = parameters.doubles( "chemical_C_saturation_density" );
-            (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index] = parameters.doubles( "internal_chemical_C" );
-          }
+            if ( (*all_cells)[i]->type == 3)
+            {
+                (*all_cells)[i]->phenotype.secretion.net_export_rates[chemical_C_substrate_index] = parameters.doubles( "chemical_C_net_export_rate" );
+                (*all_cells)[i]->phenotype.secretion.saturation_densities[chemical_C_substrate_index] = parameters.doubles( "chemical_C_saturation_density" );
+                (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index] = parameters.doubles( "internal_chemical_C" );
+            }
+            
+            double cell_vol_multiplier = parameters.doubles("cell_volumes");
+            //(*all_cells)[i]->phenotype.volume.multiply_by_ratio(1 / (*all_cells)[i]->phenotype.volume.total * cell_vol_multiplier);
+            std::cout << "Cell Volume = " <<(*all_cells)[i]->phenotype.volume.total <<std::endl;
         }
     }
 }
@@ -147,8 +152,7 @@ void update_intracellular()
             if ( (*all_cells)[j]->type == 3 )
             {
                 (*all_cells)[j]->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index] += chemC_crea_3 - 1 * chemC_cons_3;
-
-            }            
+            }           
         }
     }
 
@@ -171,6 +175,7 @@ void update_intracellular()
             {
                 (*all_cells)[i]->custom_data["internal_chemical_C"]=(*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index];
             }
+            //std::cout << "Cell Volume = " <<(*all_cells)[i]->phenotype.volume.total <<std::endl;   
         }
     }
 }
@@ -213,6 +218,7 @@ int main( int argc, char* argv[] )
 	
 	setup_tissue();
     update_secr_param_and_ic_int_met();
+
 
 	/* Users typically stop modifying here. END USERMODS */ 
 	
