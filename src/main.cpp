@@ -100,6 +100,7 @@ void update_secr_param_and_ic_int_met()
                 //std::cout << "TEST" << std::endl;
                 (*all_cells)[i]->phenotype.secretion.uptake_rates[chemical_A_substrate_index] = parameters.doubles( "chemical_A_uptake_rate_coefficient" );
                 (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index] = parameters.doubles( "internal_chemical_A" );
+                //(*all_cells)[i]->phenotype.secretion.net_export_rates[chemical_A_substrate_index] = 0.0.;
             }
           
             if ( (*all_cells)[i]->type == 2)
@@ -112,12 +113,11 @@ void update_secr_param_and_ic_int_met()
             if ( (*all_cells)[i]->type == 3)
             {
                 (*all_cells)[i]->phenotype.secretion.net_export_rates[chemical_C_substrate_index] = parameters.doubles( "chemical_C_net_export_rate" );
-                (*all_cells)[i]->phenotype.secretion.saturation_densities[chemical_C_substrate_index] = parameters.doubles( "chemical_C_saturation_density" );
                 (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index] = parameters.doubles( "internal_chemical_C" );
             }
             
             double cell_vol_multiplier = parameters.doubles("cell_volumes");
-            //(*all_cells)[i]->phenotype.volume.multiply_by_ratio(1 / (*all_cells)[i]->phenotype.volume.total * cell_vol_multiplier);
+            (*all_cells)[i]->phenotype.volume.multiply_by_ratio(1 / (*all_cells)[i]->phenotype.volume.total * cell_vol_multiplier);
             std::cout << "Cell Volume = " <<(*all_cells)[i]->phenotype.volume.total <<std::endl;
         }
     }
@@ -156,6 +156,7 @@ void update_intracellular()
         }
     }
 
+    //std::cout << "Before consumption - Cell Type 1 = " <<(*all_cells)[j]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index] << std::endl;
  
     for( int i=0; i < (*all_cells).size(); i++ )
     {
@@ -163,16 +164,18 @@ void update_intracellular()
         {
             if ( (*all_cells)[i]->type == 1 )
             {
-                //std::cout << "Before update - Cell_Type 1 = " << (*all_cells)[i]->custom_data["internal_chemical_A"] << std::endl;
+                //std::cout << "Cell_Type 1 = " << (*all_cells)[i]->custom_data["internal_chemical_A"] << std::endl;
                 (*all_cells)[i]->custom_data["internal_chemical_A"] = (*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index];
                 //std::cout << "After update - Cell_Type 1 = " << (*all_cells)[i]->custom_data["internal_chemical_A"] << std::endl;;
             }
             if ( (*all_cells)[i]->type == 2 )
             {
+                //std::cout << "Cell_Type 2 = " << (*all_cells)[i]->custom_data["internal_chemical_B"] << std::endl;
                 (*all_cells)[i]->custom_data["internal_chemical_B"]=(*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index];
             }
             if ( (*all_cells)[i]->type == 3 )
             {
+                //std::cout << "Cell_Type 3 = " << (*all_cells)[i]->phenotype.volume.total << std::endl;
                 (*all_cells)[i]->custom_data["internal_chemical_C"]=(*all_cells)[i]->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index];
             }
             //std::cout << "Cell Volume = " <<(*all_cells)[i]->phenotype.volume.total <<std::endl;   
@@ -303,9 +306,11 @@ int main( int argc, char* argv[] )
 			}
 
 			// update the microenvironment
-			microenvironment.simulate_diffusion_decay( diffusion_dt );
-            microenvironment.simulate_cell_sources_and_sinks( diffusion_dt );
-			
+            if ( parameters.bools("enable_diffusion")) 
+            {
+                microenvironment.simulate_diffusion_decay( diffusion_dt );
+                microenvironment.simulate_cell_sources_and_sinks( diffusion_dt );
+			}
 			// run PhysiCell 
 			((Cell_Container *)microenvironment.agent_container)->update_all_cells( PhysiCell_globals.current_time );
 			update_intracellular();

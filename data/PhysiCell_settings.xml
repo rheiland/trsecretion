@@ -87,7 +87,7 @@
 	</domain>
 	
 	<overall>
-		<max_time units="min">50</max_time> 
+		<max_time units="min">100</max_time> 
 		<time_units>min</time_units>
 		<space_units>micron</space_units>
 	
@@ -127,7 +127,7 @@
 				<diffusion_coefficient units="micron^2/min">1000.0</diffusion_coefficient>
 				<decay_rate units="1/min">0.0</decay_rate>  
 			</physical_parameter_set>
-			<initial_condition units="mmol">5.0</initial_condition>
+			<initial_condition units="mmol">1.0</initial_condition>
 			<Dirichlet_boundary_condition units="mmol" enabled="false">0.0</Dirichlet_boundary_condition>
 		</variable>
 		
@@ -136,7 +136,7 @@
 				<diffusion_coefficient units="micron^2/min">1000.0</diffusion_coefficient>
 				<decay_rate units="1/min">0.0</decay_rate>  
 			</physical_parameter_set>
-			<initial_condition units="mmol">5.0</initial_condition>
+			<initial_condition units="mmol">0.0</initial_condition>
 			<Dirichlet_boundary_condition units="mmol" enabled="false">0.0</Dirichlet_boundary_condition>
 		</variable>
         
@@ -145,7 +145,7 @@
 				<diffusion_coefficient units="micron^2/min">1000.0</diffusion_coefficient>
 				<decay_rate units="1/min">0.0</decay_rate>  
 			</physical_parameter_set>
-			<initial_condition units="mmol">5.0</initial_condition>
+			<initial_condition units="mmol">0.5</initial_condition>
 			<Dirichlet_boundary_condition units="mmol" enabled="false">0.0</Dirichlet_boundary_condition>
 		</variable>
 		
@@ -352,23 +352,22 @@
 	
 	<user_parameters>
     	<random_seed type="int" units="dimensionless" hidden="true">0</random_seed> 
-        <cell_volumes type="double" units="micron^3" hidden="false" description="Cell Total Volumes Default= 2494.0">2494.0</cell_volumes>
-        <diffusion type="bool" units="dimensionless" hidden="false" description="Enables/Disables Diffusion">true</diffusion>
-        
+        <cell_volumes type="double" units="micron^3" hidden="false" description="Cell Volume (In PhysiCell it is 2494.0 micron^3)">2494.0</cell_volumes>
         
 		<div_uptaken type="divider" description="---Chemical A (uptaken chemical)---"/>
-		<chemical_A_uptake_rate_coefficient type="double" units="1/min"  description="uptake rate for chemical A (Default = 0.0000075)">0.5</chemical_A_uptake_rate_coefficient> <!-- 0.0000075 -->
-		<internal_chemical_A type="double" units="substance" description="initial internalized secreted chemical (Default = 0.0)">10.0</internal_chemical_A>
+		<chemical_A_uptake_rate_coefficient type="double" units="1/min"  description="uptake rate for chemical A (Suggested Values = 0.005,  0.0000002)">0.000002</chemical_A_uptake_rate_coefficient> <!-- 0.0000075 -->
+		<internal_chemical_A type="double" units="substance" description="initial internalized secreted chemical (Default = 0.0)">0.0</internal_chemical_A>
         
 		<div_secreted type="divider" description="---Chemical B (secreted chemical)---"/>
-		<chemical_B_secretion_rate type="double" units="1/min" description="secreteion rate for secreted chemical (Default = 0.0000075)">0.00000375</chemical_B_secretion_rate>
-		<chemical_B_saturation_density type="double" units="substance/volume" description="saturation density for secreted chemical (Default = 10.0)">10.0</chemical_B_saturation_density>
+		<chemical_B_secretion_rate type="double" units="1/min" description="secreteion rate for secreted chemical (Default = 0.00000075)">0.000002</chemical_B_secretion_rate>
+		<chemical_B_saturation_density type="double" units="substance/volume" description="saturation density for secreted chemical (Default = 10.0)">1.0</chemical_B_saturation_density>
 		<internal_chemical_B type="double" units="1/min" description="initial internalized secreted chemical (Default = 10.0)">1.0</internal_chemical_B>
-		
+		<enable_diffusion type="bool" units="dimensionless" hidden="false" description="Enables/Disables Diffusion (Please make it to see exponential curve with eliminating diffusion)">true</enable_diffusion>
+        
         <div_exported type="divider" description="---Chemical C (exported chemical)---"/>
-        <chemical_C_net_export_rate type="double" units="substance/min" description="net export rate for chemical C (Default = 0.0000075). It can be negative to uptake">0.0000075</chemical_C_net_export_rate>
-        <chemical_C_saturation_density type="double" units="substance/volume" description="saturation density for secreted chemical (Default = 10.0)">10.0</chemical_C_saturation_density>
-        <internal_chemical_C type="double" units="1/min" description="initial internalized secreted chemical (Default = 10.0)">10.0</internal_chemical_C>
+        <chemical_C_net_export_rate type="double" units="substance/min" description="net export rate for chemical C (Default = 0.00000075). It can be negative for uptaking">0.005</chemical_C_net_export_rate>
+        <internal_chemical_C type="double" units="1/min" description="initial internalized secreted chemical (Default = 10.0)">1.5</internal_chemical_C>
+        
         
         <div_internal type="divider" description="---internal creation or consumption---"/>
         <internal_reactions type="bool" units="" description="Cells will have intracellular reactions if it is true">false</internal_reactions>

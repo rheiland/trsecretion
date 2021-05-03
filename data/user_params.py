@@ -41,16 +41,16 @@ class UserTab(object):
         param_name2.style.button_color = 'lightgreen'
 
         self.chemical_A_uptake_rate_coefficient = FloatText(
-          value=0.0000075,
-          step=1e-06,
+          value=0.000002,
+          step=1e-07,
           style=style, layout=widget_layout)
 
         param_name3 = Button(description='internal_chemical_A', disabled=True, layout=name_button_layout)
         param_name3.style.button_color = 'tan'
 
         self.internal_chemical_A = FloatText(
-          value=10.0,
-          step=1,
+          value=0.0,
+          step=0.01,
           style=style, layout=widget_layout)
 
         div_row2 = Button(description='---Chemical B (secreted chemical)---', disabled=True, layout=divider_button_layout)
@@ -59,50 +59,49 @@ class UserTab(object):
         param_name4.style.button_color = 'lightgreen'
 
         self.chemical_B_secretion_rate = FloatText(
-          value=0.0000075,
-          step=1e-06,
+          value=0.000002,
+          step=1e-07,
           style=style, layout=widget_layout)
 
         param_name5 = Button(description='chemical_B_saturation_density', disabled=True, layout=name_button_layout)
         param_name5.style.button_color = 'tan'
 
         self.chemical_B_saturation_density = FloatText(
-          value=10.0,
-          step=1,
+          value=1.0,
+          step=0.1,
           style=style, layout=widget_layout)
 
         param_name6 = Button(description='internal_chemical_B', disabled=True, layout=name_button_layout)
         param_name6.style.button_color = 'lightgreen'
 
         self.internal_chemical_B = FloatText(
-          value=10.0,
-          step=1,
+          value=1.0,
+          step=0.1,
+          style=style, layout=widget_layout)
+
+        param_name7 = Button(description='enable_diffusion', disabled=True, layout=name_button_layout)
+        param_name7.style.button_color = 'tan'
+
+        self.enable_diffusion = Checkbox(
+          value=True,
           style=style, layout=widget_layout)
 
         div_row3 = Button(description='---Chemical C (exported chemical)---', disabled=True, layout=divider_button_layout)
 
-        param_name7 = Button(description='chemical_C_net_export_rate', disabled=True, layout=name_button_layout)
-        param_name7.style.button_color = 'tan'
-
-        self.chemical_C_net_export_rate = FloatText(
-          value=0.0000075,
-          step=1e-06,
-          style=style, layout=widget_layout)
-
-        param_name8 = Button(description='chemical_C_saturation_density', disabled=True, layout=name_button_layout)
+        param_name8 = Button(description='chemical_C_net_export_rate', disabled=True, layout=name_button_layout)
         param_name8.style.button_color = 'lightgreen'
 
-        self.chemical_C_saturation_density = FloatText(
-          value=10.0,
-          step=1,
+        self.chemical_C_net_export_rate = FloatText(
+          value=0.005,
+          step=0.001,
           style=style, layout=widget_layout)
 
         param_name9 = Button(description='internal_chemical_C', disabled=True, layout=name_button_layout)
         param_name9.style.button_color = 'tan'
 
         self.internal_chemical_C = FloatText(
-          value=10.0,
-          step=1,
+          value=1.5,
+          step=0.1,
           style=style, layout=widget_layout)
 
         div_row4 = Button(description='---internal creation or consumption---', disabled=True, layout=divider_button_layout)
@@ -163,10 +162,10 @@ class UserTab(object):
         units_button8 = Button(description='1/min', disabled=True, layout=units_button_layout) 
         units_button8.style.button_color = 'lightgreen'
         units_button9 = Button(description='', disabled=True, layout=units_button_layout) 
-        units_button9.style.button_color = 'lightgreen'
-        units_button10 = Button(description='substance/min', disabled=True, layout=units_button_layout) 
+        units_button9.style.button_color = 'tan'
+        units_button10 = Button(description='', disabled=True, layout=units_button_layout) 
         units_button10.style.button_color = 'tan'
-        units_button11 = Button(description='substance/volume', disabled=True, layout=units_button_layout) 
+        units_button11 = Button(description='substance/min', disabled=True, layout=units_button_layout) 
         units_button11.style.button_color = 'lightgreen'
         units_button12 = Button(description='1/min', disabled=True, layout=units_button_layout) 
         units_button12.style.button_color = 'tan'
@@ -183,21 +182,21 @@ class UserTab(object):
         units_button18 = Button(description='1/min', disabled=True, layout=units_button_layout) 
         units_button18.style.button_color = 'lightgreen'
 
-        desc_button2 = Button(description='' , tooltip='', disabled=True, layout=desc_button_layout) 
+        desc_button2 = Button(description='Cell Volume (In PhysiCell it is 2494.0 micron^3)' , tooltip='Cell Volume (In PhysiCell it is 2494.0 micron^3)', disabled=True, layout=desc_button_layout) 
         desc_button2.style.button_color = 'tan'
-        desc_button3 = Button(description='uptake rate for chemical A (Default = 0.0000075)' , tooltip='uptake rate for chemical A (Default = 0.0000075)', disabled=True, layout=desc_button_layout) 
+        desc_button3 = Button(description='uptake rate for chemical A (Suggested Values = 0.005,  0.0000002)' , tooltip='uptake rate for chemical A (Suggested Values = 0.005,  0.0000002)', disabled=True, layout=desc_button_layout) 
         desc_button3.style.button_color = 'lightgreen'
         desc_button4 = Button(description='initial internalized secreted chemical (Default = 0.0)' , tooltip='initial internalized secreted chemical (Default = 0.0)', disabled=True, layout=desc_button_layout) 
         desc_button4.style.button_color = 'tan'
-        desc_button5 = Button(description='secreteion rate for secreted chemical (Default = 0.0000075)' , tooltip='secreteion rate for secreted chemical (Default = 0.0000075)', disabled=True, layout=desc_button_layout) 
+        desc_button5 = Button(description='secreteion rate for secreted chemical (Default = 0.00000075)' , tooltip='secreteion rate for secreted chemical (Default = 0.00000075)', disabled=True, layout=desc_button_layout) 
         desc_button5.style.button_color = 'lightgreen'
         desc_button6 = Button(description='saturation density for secreted chemical (Default = 10.0)' , tooltip='saturation density for secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button6.style.button_color = 'tan'
         desc_button7 = Button(description='initial internalized secreted chemical (Default = 10.0)' , tooltip='initial internalized secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button7.style.button_color = 'lightgreen'
-        desc_button8 = Button(description='net export rate for chemical C (Default = 0.0000075). It can be negative to uptake' , tooltip='net export rate for chemical C (Default = 0.0000075). It can be negative to uptake', disabled=True, layout=desc_button_layout) 
+        desc_button8 = Button(description='Enables/Disables Diffusion (Please make it to see exponential curve with eliminating diffusion)' , tooltip='Enables/Disables Diffusion (Please make it to see exponential curve with eliminating diffusion)', disabled=True, layout=desc_button_layout) 
         desc_button8.style.button_color = 'tan'
-        desc_button9 = Button(description='saturation density for secreted chemical (Default = 10.0)' , tooltip='saturation density for secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
+        desc_button9 = Button(description='net export rate for chemical C (Default = 0.00000075). It can be negative for uptaking' , tooltip='net export rate for chemical C (Default = 0.00000075). It can be negative for uptaking', disabled=True, layout=desc_button_layout) 
         desc_button9.style.button_color = 'lightgreen'
         desc_button10 = Button(description='initial internalized secreted chemical (Default = 10.0)' , tooltip='initial internalized secreted chemical (Default = 10.0)', disabled=True, layout=desc_button_layout) 
         desc_button10.style.button_color = 'tan'
@@ -218,8 +217,8 @@ class UserTab(object):
         row5 = [param_name4, self.chemical_B_secretion_rate, units_button6, desc_button5] 
         row6 = [param_name5, self.chemical_B_saturation_density, units_button7, desc_button6] 
         row7 = [param_name6, self.internal_chemical_B, units_button8, desc_button7] 
-        row8 = [param_name7, self.chemical_C_net_export_rate, units_button10, desc_button8] 
-        row9 = [param_name8, self.chemical_C_saturation_density, units_button11, desc_button9] 
+        row8 = [param_name7, self.enable_diffusion, units_button9, desc_button8] 
+        row9 = [param_name8, self.chemical_C_net_export_rate, units_button11, desc_button9] 
         row10 = [param_name9, self.internal_chemical_C, units_button12, desc_button10] 
         row11 = [param_name10, self.internal_reactions, units_button14, desc_button11] 
         row12 = [param_name11, self.Chemical_A_consumption_rate, units_button15, desc_button12] 
@@ -252,8 +251,8 @@ class UserTab(object):
           box5,
           box6,
           box7,
-          div_row3,
           box8,
+          div_row3,
           box9,
           box10,
           div_row4,
@@ -279,8 +278,8 @@ class UserTab(object):
         self.chemical_B_secretion_rate.value = float(uep.find('.//chemical_B_secretion_rate').text)
         self.chemical_B_saturation_density.value = float(uep.find('.//chemical_B_saturation_density').text)
         self.internal_chemical_B.value = float(uep.find('.//internal_chemical_B').text)
+        self.enable_diffusion.value = ('true' == (uep.find('.//enable_diffusion').text.lower()) )
         self.chemical_C_net_export_rate.value = float(uep.find('.//chemical_C_net_export_rate').text)
-        self.chemical_C_saturation_density.value = float(uep.find('.//chemical_C_saturation_density').text)
         self.internal_chemical_C.value = float(uep.find('.//internal_chemical_C').text)
         self.internal_reactions.value = ('true' == (uep.find('.//internal_reactions').text.lower()) )
         self.Chemical_A_consumption_rate.value = float(uep.find('.//Chemical_A_consumption_rate').text)
@@ -304,8 +303,8 @@ class UserTab(object):
         uep.find('.//chemical_B_secretion_rate').text = str(self.chemical_B_secretion_rate.value)
         uep.find('.//chemical_B_saturation_density').text = str(self.chemical_B_saturation_density.value)
         uep.find('.//internal_chemical_B').text = str(self.internal_chemical_B.value)
+        uep.find('.//enable_diffusion').text = str(self.enable_diffusion.value)
         uep.find('.//chemical_C_net_export_rate').text = str(self.chemical_C_net_export_rate.value)
-        uep.find('.//chemical_C_saturation_density').text = str(self.chemical_C_saturation_density.value)
         uep.find('.//internal_chemical_C').text = str(self.internal_chemical_C.value)
         uep.find('.//internal_reactions').text = str(self.internal_reactions.value)
         uep.find('.//Chemical_A_consumption_rate').text = str(self.Chemical_A_consumption_rate.value)

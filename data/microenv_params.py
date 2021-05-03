@@ -41,7 +41,7 @@ class MicroenvTab(object):
           step=0.01,style=style, layout=widget_layout)
         param_name3 = Button(description='initial_condition', disabled=True, layout=name_button_layout)
 
-        self.chemical_A_initial_condition = FloatText(value=5.0,style=style, layout=widget_layout)
+        self.chemical_A_initial_condition = FloatText(value=1.0,style=style, layout=widget_layout)
         param_name4 = Button(description='Dirichlet_boundary_condition', disabled=True, layout=name_button_layout)
 
         self.chemical_A_Dirichlet_boundary_condition = FloatText(value=0.0,style=style, layout=widget_layout)
@@ -61,7 +61,7 @@ class MicroenvTab(object):
           step=0.01,style=style, layout=widget_layout)
         param_name7 = Button(description='initial_condition', disabled=True, layout=name_button_layout)
 
-        self.chemical_B_initial_condition = FloatText(value=5.0,style=style, layout=widget_layout)
+        self.chemical_B_initial_condition = FloatText(value=0.0,style=style, layout=widget_layout)
         param_name8 = Button(description='Dirichlet_boundary_condition', disabled=True, layout=name_button_layout)
 
         self.chemical_B_Dirichlet_boundary_condition = FloatText(value=0.0,style=style, layout=widget_layout)
@@ -81,7 +81,7 @@ class MicroenvTab(object):
           step=0.01,style=style, layout=widget_layout)
         param_name11 = Button(description='initial_condition', disabled=True, layout=name_button_layout)
 
-        self.chemical_C_initial_condition = FloatText(value=5.0,style=style, layout=widget_layout)
+        self.chemical_C_initial_condition = FloatText(value=0.5,style=style, layout=widget_layout)
         param_name12 = Button(description='Dirichlet_boundary_condition', disabled=True, layout=name_button_layout)
 
         self.chemical_C_Dirichlet_boundary_condition = FloatText(value=0.0,style=style, layout=widget_layout)

@@ -111,18 +111,6 @@ void create_cell_types( void )
     //rwh: note that now we use a pointer, pCD, not an instance, to the object.
 	Cell_Definition* pCD = find_cell_definition( "first cell" ); 
 
-    // first_cell.phenotype.secretion.net_export_rates[chemical_A_substrate_index] = parameters.doubles( "chemical_A_secretion_rate" );
-    pCD->phenotype.secretion.net_export_rates[chemical_A_substrate_index] = parameters.doubles( "chemical_A_secretion_rate" );
- 	pCD->phenotype.secretion.saturation_densities[chemical_A_substrate_index] = parameters.doubles( "chemical_A_saturation_density" );    
-	
-	// pCD = find_cell_definition( "second cell" ); 
-    // pCD->phenotype.secretion.net_export_rates[chemical_B_substrate_index] = parameters.doubles( "chemical_B_secretion_rate" );
- 	// pCD->phenotype.secretion.saturation_densities[chemical_B_substrate_index] = parameters.doubles( "chemical_B_saturation_density" );    
-
-	// pCD = find_cell_definition( "third cell" );
-    // pCD->phenotype.secretion.net_export_rates[chemical_C_substrate_index] = parameters.doubles( "chemical_C_secretion_rate" );
- 	// pCD->phenotype.secretion.saturation_densities[chemical_C_substrate_index] = parameters.doubles( "chemical_C_saturation_density" );    
-	
 	/*
 	   This builds the map of cell definitions and summarizes the setup. 
 	*/
@@ -142,7 +130,20 @@ void setup_microenvironment( void )
 		default_microenvironment_options.simulate_2D = true; 
 	}
 	
-	initialize_microenvironment(); 	
+	initialize_microenvironment(); 
+
+/* 
+    for( int n = 0; n < microenvironment.mesh.voxels.size() ; n++ )	
+    {
+        std::vector<double> dc_conditions(3);
+        dc_conditions[0]=1.0;
+        dc_conditions[1]=0.0;
+        dc_conditions[2]=0.0;
+		microenvironment.add_dirichlet_node( n,dc_conditions);
+    }
+    microenvironment.set_substrate_dirichlet_activation(0,true);
+    microenvironment.set_substrate_dirichlet_activation(1,true);
+    microenvironment.set_substrate_dirichlet_activation(2,true); */
 	return; 
 }
 
@@ -205,25 +206,26 @@ std::vector<std::string> my_coloring_function( Cell* pCell )
     {
         std::cout << "cell 1" << std::endl;
         std::cout<<  "chem A = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index]<<std::endl;
-        std::cout<<  "chem B = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index]<<std::endl;
-        std::cout<<  "chem C = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index]<<std::endl;
+        //std::cout<<  "chem B = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index]<<std::endl;
+        //std::cout<<  "chem C = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index]<<std::endl;
     }
     
     if (pCell->phenotype.death.dead == false && pCell->type == 2)
     {
         std::cout << "cell 2" << std::endl;
-        std::cout<<  "chem A = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index]<<std::endl;
+        //std::cout<<  "chem A = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index]<<std::endl;
         std::cout<<  "chem B = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index]<<std::endl;
-        std::cout<<  "chem C = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index]<<std::endl;
+        //std::cout<<  "chem C = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index]<<std::endl;
     }    
     
     
     if (pCell->phenotype.death.dead == false && pCell->type == 3)
     {
         std::cout << "cell 3" << std::endl;
-        std::cout<<  "chem A = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index]<<std::endl;
-        std::cout<<  "chem B = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index]<<std::endl;
+        //std::cout<<  "chem A = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_A_substrate_index]<<std::endl;
+        //std::cout<<  "chem B = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_B_substrate_index]<<std::endl;
         std::cout<<  "chem C = " << pCell->phenotype.molecular.internalized_total_substrates[chemical_C_substrate_index]<<std::endl;
+        std::cout<<  "chem C sat density = " << pCell->phenotype.secretion.saturation_densities[chemical_C_substrate_index] << std::endl;
     }    
     
     
