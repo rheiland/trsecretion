@@ -1057,11 +1057,11 @@ class SubstrateTab(object):
         if self.analysis_data_choice.value == 0:  # live,infected,dead
             color_int = 'tab:red'
             color_ext = 'tab:blue'
-            color_tot = 'tab:purple'
+            color_tot = 'tab:blue'
             # Chem A Plot
             p1 = self.ax1.plot(self.xval[1:], self.yval1[1:], label='int chem A', linewidth=3, color = color_int)
             p4 = self.ax1_extracellular.plot(self.xval[1:], self.yval_ext1[1:], label='ext chem A', linewidth=3, color = color_ext)
-            p5 = self.ax1_extracellular.plot(self.xval[1:], self.yval_tot1[1:], label ='total chem A', linewidth=3, color = color_tot)
+            p5 = self.ax1_extracellular.plot(self.xval[1:], self.yval_tot1[1:], label ='total chem A', linewidth=3, color = color_tot, linestyle = '--')
             self.ax1_extracellular.set_ylim(min(self.yval_ext1[1:]-2, default='EMPTY'), max(self.yval_tot1[1:]+2, default='EMPTY'))
             y_fmt = tick.FormatStrFormatter('%.f')
             self.ax1_extracellular.yaxis.set_major_formatter(y_fmt)
@@ -1074,7 +1074,7 @@ class SubstrateTab(object):
             # Chem B Plot
             p2 = self.ax2.plot(self.xval[1:], self.yval2[1:], label='int chem B', linewidth=3, color = color_int)
             p6 = self.ax2_extracellular.plot(self.xval[1:], self.yval_ext2[1:], label='ext chem B', linewidth=3, color = color_ext)
-            p7 = self.ax2_extracellular.plot(self.xval[1:], self.yval_tot2[1:], label ='total chem B', linewidth=3, color = color_tot)
+            p7 = self.ax2_extracellular.plot(self.xval[1:], self.yval_tot2[1:], label ='total chem B', linewidth=3, color = color_tot, linestyle = '--')
             self.ax2_extracellular.set_ylim(min(self.yval_ext2[1:]-2, default='EMPTY'), max(self.yval_tot2[1:]+2, default='EMPTY'))
             #self.ax1.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
             y_fmt = tick.FormatStrFormatter('%.f')
@@ -1088,7 +1088,7 @@ class SubstrateTab(object):
             # Chem C Plot
             p3 = self.ax3.plot(self.xval[1:], self.yval3[1:], label='int chem C', linewidth=3, color = color_int)
             p8 = self.ax3_extracellular.plot(self.xval[1:], self.yval_ext3[1:], label='ext chem C', linewidth=3, color = color_ext)
-            p9 = self.ax3_extracellular.plot(self.xval[1:], self.yval_tot3[1:], label ='total chem C', linewidth=3, color = color_tot)
+            p9 = self.ax3_extracellular.plot(self.xval[1:], self.yval_tot3[1:], label ='total chem C', linewidth=3, color = color_tot, linestyle = '--')
             self.ax3_extracellular.set_ylim(min(self.yval_ext3[1:]-2, default='EMPTY'), max(self.yval_tot3[1:]+2, default='EMPTY'))
             #self.ax1.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
             y_fmt = tick.FormatStrFormatter('%.f')
