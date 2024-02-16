@@ -1603,12 +1603,22 @@ class SubstrateTab(object):
                 self.ax0.set_title(self.title_str, fontsize=self.fontsize)
                 cbar = self.fig.colorbar(substrate_plot, ax=self.ax0, format = "%.7f")
                 cbar.ax.tick_params(labelsize=12)
+                cbar.set_label('mmol',size=self.fontsize)
 
             self.ax0.set_xlim(self.xmin, self.xmax)
             self.ax0.set_ylim(self.ymin, self.ymax)
             self.ax1_extracellular = self.ax1.twinx()
             self.ax2_extracellular = self.ax2.twinx()           
-            self.ax3_extracellular = self.ax3.twinx()            
+            self.ax3_extracellular = self.ax3.twinx()     
+            fname = "output%08d_microenvironment0.mat" % self.substrate_frame
+            full_fname = os.path.join(self.output_dir, fname)
+            if os.path.isfile(full_fname):            
+                x1 = -85
+                x2 = -35
+                y1 = -85
+                y2 = -85
+                self.ax0.plot([x1,x2],[y1,y2], 'k', linewidth = 5)
+                self.ax0.text(-70, -80, u"50 \u03bcm")            
             #self.ax1_total_chem = self.ax1.twinx()
 
 
@@ -1620,6 +1630,7 @@ class SubstrateTab(object):
 
                     # Furkan?
                     self.fig, (self.ax0, self.ax1, self.ax2, self.ax3) = plt.subplots(1, 4, figsize=(self.plots4_width, self.plots4_height))
+
 
                     # self.fig = plt.figure(figsize=(12, 12), constrained_layout=True)
                     # widths = [1, 1]
