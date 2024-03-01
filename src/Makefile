@@ -167,20 +167,25 @@ install:
 
 distclean: clean
 	rm -f ../bin/$(PROGRAM_NAME)
+    rm -f ../bin/$(PROGRAM_NAME).exe
+    rm -rf ../bin/__pycache__
+    rm -rf ../.ipynb_checkpoints
 
 clean:
 	rm -f *.o
 	rm -f $(PROGRAM_NAME)
+    rm -f $(PROGRAM_NAME).exe
 	
 data-cleanup:
 	rm -rf ./output
 	mkdir ./output
+	rm -f *.mat
+	rm -f *.xml
+	rm -f *.svg
+	rm -f ./output/*
 	touch ./output/empty.txt
 	
 # archival 
-	
-checkpoint: 
-	zip -r $$(date +%b_%d_%Y_%H%M).zip Makefile *.cpp *.h config/*.xml custom_modules/* 
 	
 zip:
 	zip -r latest.zip Makefile* *.cpp *.h BioFVM/* config/* core/* custom_modules/* matlab/* modules/* sample_projects/* 
@@ -202,51 +207,9 @@ untar:
 	cp ./archives/latest.tar .
 	tar -xzf latest.tar
 
-# easier animation 
-
-FRAMERATE := 24
-OUTPUT := output
-
-jpeg: 
-	@magick identify -format "%h" $(OUTPUT)/initial.svg >> __H.txt 
-	@magick identify -format "%w" $(OUTPUT)/initial.svg >> __W.txt 
-	@expr 2 \* \( $$(grep . __H.txt) / 2 \) >> __H1.txt 
-	@expr 2 \* \( $$(grep . __W.txt) / 2 \) >> __W1.txt 
-	@echo "$$(grep . __W1.txt)!x$$(grep . __H1.txt)!" >> __resize.txt 
-	@magick mogrify -format jpg -resize $$(grep . __resize.txt) $(OUTPUT)/s*.svg
-	rm -f __H*.txt __W*.txt __resize.txt 
-	
-gif: 
-	magick convert $(OUTPUT)/s*.svg $(OUTPUT)/out.gif 
-	 
-movie:
-	ffmpeg -r $(FRAMERATE) -f image2 -i $(OUTPUT)/snapshot%08d.jpg -vcodec libx264 -pix_fmt yuv420p -strict -2 -tune animation -crf 15 -acodec none $(OUTPUT)/out.mp4
-	
-# upgrade rules 
-
-SOURCE := PhysiCell_upgrade.zip 
-get-upgrade: 
-	@echo $$(curl https://raw.githubusercontent.com/MathCancer/PhysiCell/master/VERSION.txt) >> VER.txt 
-	@echo https://github.com/MathCancer/PhysiCell/releases/download/$$(grep . VER.txt)/PhysiCell_V.$$(grep . VER.txt).zip >> DL_FILE.txt 
-	rm -f VER.txt
-	$$(curl -L $$(grep . DL_FILE.txt) --output PhysiCell_upgrade.zip)
-	rm -f DL_FILE.txt 
-
-PhysiCell_upgrade.zip: 
-	make get-upgrade 
-
-upgrade: $(SOURCE)
-	unzip $(SOURCE) PhysiCell/VERSION.txt
-	mv -f PhysiCell/VERSION.txt . 
-	unzip $(SOURCE) PhysiCell/core/* 
-	cp -r PhysiCell/core/* core 
-	unzip $(SOURCE) PhysiCell/modules/* 
-	cp -r PhysiCell/modules/* modules 
-	unzip $(SOURCE) PhysiCell/sample_projects/* 
-	cp -r PhysiCell/sample_projects/* sample_projects 
-	unzip $(SOURCE) PhysiCell/BioFVM/* 
-	cp -r PhysiCell/BioFVM/* BioFVM
-	unzip $(SOURCE) PhysiCell/documentation/User_Guide.pdf
-	mv -f PhysiCell/documentation/User_Guide.pdf documentation
-	rm -f -r PhysiCell
-	rm -f $(SOURCE) 
+animation:
+	cd output;magick mogrify -format jpg snapshot*.svg;magick snapshot*.jpg animation.gif
+    
+make notepad_edit:
+	notepad++ main.cpp ./config/PhysiCell_settings.xml ./custom_modules/custom.h ./custom_modules/custom.cpp
+    
