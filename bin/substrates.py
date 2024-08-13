@@ -78,6 +78,8 @@ class SubstrateTab(object):
 
         self.axis_label_fontsize = 15
 
+        self.colab_flag = True
+
         # Furkan
         self.plots4_width = 16
         self.plots4_height = 16
@@ -579,7 +581,27 @@ class SubstrateTab(object):
 
         controls_box = HBox([cells_vbox, substrate_vbox, analysis_data_hbox], justify_content='center')  # vs. 'flex-start   , layout=Layout(width='900px'))
 
-        if (hublib_flag):
+        if self.colab_flag:
+            self.download_button = Button(
+                description='Download mcds.zip',
+                button_style='success',  # 'success', 'info', 'warning', 'danger' or ''
+                tooltip='Download data',
+            )
+            self.download_button.on_click(self.download_local_cb)
+
+            self.download_svg_button = Button(
+                description='Download svg.zip',
+                button_style='success',  # 'success', 'info', 'warning', 'danger' or ''
+                tooltip='Download data',
+            )
+            self.download_svg_button.on_click(self.download_local_svg_cb)
+
+            download_row = HBox([self.download_button, self.download_svg_button])
+            # box_layout = Layout(border='0px solid')
+            controls_box = VBox([row1, row2])  # ,width='50%', layout=box_layout)
+            self.tab = VBox([controls_box, self.i_plot, download_row])
+
+        elif (hublib_flag):
             self.download_button = Download('mcds.zip', style='warning', icon='cloud-download', 
                                                 tooltip='Download MCDS data', cb=self.download_cb)
 
@@ -814,6 +836,29 @@ class SubstrateTab(object):
         with zipfile.ZipFile('config.zip', 'w') as myzip:
             myzip.write(file_str, os.path.basename(file_str))   # 2nd arg avoids full filename path in the archive
 
+    def download_local_svg_cb(self,s):
+        file_str = os.path.join(self.output_dir, '*.svg')
+        # print('zip up all ',file_str)
+        with zipfile.ZipFile('svg.zip', 'w') as myzip:
+            for f in glob.glob(file_str):
+                myzip.write(f, os.path.basename(f))   # 2nd arg avoids full filename path in the archive
+
+        if self.colab_flag:
+            files.download('svg.zip')
+
+    def download_local_cb(self,s):
+        file_xml = os.path.join(self.output_dir, '*.xml')
+        file_mat = os.path.join(self.output_dir, '*.mat')
+        # print('zip up all ',file_str)
+        with zipfile.ZipFile('mcds.zip', 'w') as myzip:
+            for f in glob.glob(file_xml):
+                myzip.write(f, os.path.basename(f)) # 2nd arg avoids full filename path in the archive
+            for f in glob.glob(file_mat):
+                myzip.write(f, os.path.basename(f))
+
+        if self.colab_flag:
+            files.download('mcds.zip')
+
     def download_svg_cb(self):
         file_str = os.path.join(self.output_dir, '*.svg')
         # print('zip up all ',file_str)
@@ -1033,6 +1078,9 @@ class SubstrateTab(object):
 
         self.ax2.plot([0.], [0.], color='white',marker='.')  # hack empty
         self.ax3.plot([0.], [0.], color='white',marker='.')  # hack empty
+
+        # if self.colab:
+        #     plt.show()
 
     #------------------------------------------------------------
     # Called from 'plot_substrate' if the checkbox is ON
@@ -1457,6 +1505,8 @@ class SubstrateTab(object):
         #         ytracks = self.trackd[key][:,1]
         #         plt.plot(xtracks[0:frame],ytracks[0:frame],  linewidth=5)
 
+        if self.colab:
+            plt.show()
 
 
 
@@ -1705,3 +1755,6 @@ class SubstrateTab(object):
             self.plot_analysis_data(self.substrate_frame)
         else:
             self.plot_empty_analysis_data()
+
+        if self.colab:
+            plt.show()
