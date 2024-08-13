@@ -1079,7 +1079,7 @@ class SubstrateTab(object):
         self.ax2.plot([0.], [0.], color='white',marker='.')  # hack empty
         self.ax3.plot([0.], [0.], color='white',marker='.')  # hack empty
 
-        # if self.colab:
+        # if self.colab_flag:
         #     plt.show()
 
     #------------------------------------------------------------
@@ -1505,7 +1505,7 @@ class SubstrateTab(object):
         #         ytracks = self.trackd[key][:,1]
         #         plt.plot(xtracks[0:frame],ytracks[0:frame],  linewidth=5)
 
-        if self.colab:
+        if self.colab_flag:
             plt.show()
 
 
@@ -1756,5 +1756,5 @@ class SubstrateTab(object):
         else:
             self.plot_empty_analysis_data()
 
-        if self.colab:
+        if self.colab_flag:
             plt.show()
