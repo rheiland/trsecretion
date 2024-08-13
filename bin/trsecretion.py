@@ -332,6 +332,12 @@ def outcb(s):
 
 # Callback for the ("dumb") 'Run' button (without hublib.ui)
 def run_button_cb(s):
+
+    # if self.colab_flag:
+    if True:
+        num_frames = float(config_tab.tmax.value) / float(config_tab.mcds_interval.value)
+        sub.max_frames.value = int(num_frames)
+
 #    with debug_view:
 #        print('run_button_cb')
 
