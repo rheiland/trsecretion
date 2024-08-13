@@ -167,14 +167,14 @@ install:
 
 distclean: clean
 	rm -f ../bin/$(PROGRAM_NAME)
-    rm -f ../bin/$(PROGRAM_NAME).exe
-    rm -rf ../bin/__pycache__
-    rm -rf ../.ipynb_checkpoints
+	rm -f ../bin/$(PROGRAM_NAME).exe
+	rm -rf ../bin/__pycache__
+	rm -rf ../.ipynb_checkpoints
 
 clean:
 	rm -f *.o
 	rm -f $(PROGRAM_NAME)
-    rm -f $(PROGRAM_NAME).exe
+	rm -f $(PROGRAM_NAME).exe
 	
 data-cleanup:
 	rm -rf ./output
