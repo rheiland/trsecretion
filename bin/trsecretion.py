@@ -23,16 +23,19 @@ import platform
 import subprocess
 from debug import debug_view
 
-hublib_flag = True
-if platform.system() != 'Windows':
-    try:
-#        print("Trying to import hublib.ui")
-        from hublib.ui import RunCommand, Submit
-        # from hublib2.ui import RunCommand, Submit
-    except:
-        hublib_flag = False
-else:
-    hublib_flag = False
+# hublib_flag = True
+# if platform.system() != 'Windows':
+#     try:
+# #        print("Trying to import hublib.ui")
+#         from hublib.ui import RunCommand, Submit
+#         # from hublib2.ui import RunCommand, Submit
+#     except:
+#         hublib_flag = False
+# else:
+#     hublib_flag = False
+
+hublib_flag = False
+from hublib_ui_command import RunCommand
 
 
 # join_our_list = "(Join/ask questions at https://groups.google.com/forum/#!forum/physicell-users)\n"
@@ -379,7 +382,8 @@ if nanoHUB_flag:
                         showcache=False,
                         outcb=outcb)
 else:
-    if (hublib_flag):
+    # if (hublib_flag):
+    if True:
         run_button = RunCommand(start_func=run_sim_func,
                             done_func=run_done_func,
                             cachename='trsecretion',
