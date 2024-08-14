@@ -294,8 +294,8 @@ def run_sim_func(s):
     new_config_file = "tmpdir/config.xml"  # use Path; work on Windows?
     write_config_file(new_config_file)  
 
-    with open(new_config_file) as f:
-        run_name = s.make_rname(f.read())
+    # with open(new_config_file) as f:
+    #     run_name = s.make_rname(f.read())
 
     tdir = os.path.abspath('tmpdir')
     os.chdir(tdir)  # operate from tmpdir; temporary output goes here.  may be copied to cache later
@@ -314,7 +314,8 @@ def run_sim_func(s):
         # reset Dropdown 'Load Config' to 'DEFAULT' when Run interactively
         # Warning: this will trigger read_config_cb() !!
         # read_config.index = 0   
-        s.run("../bin/myproj config.xml", runname=run_name)
+        # s.run("../bin/myproj config.xml", runname=run_name)
+        s.run("../bin/myproj config.xml")
 
     # with debug_view:
     #     print('run_sim_func DONE')
