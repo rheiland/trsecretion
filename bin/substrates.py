@@ -1157,14 +1157,14 @@ class SubstrateTab(object):
         # kdx = len(self.xval) - 1
         # if (kdx >= len(self.xval)):
             # kdx = len(self.xval) - 1
-        # print("plot_analysis_data(): t=",t,", kdx=",kdx,", len(self.xval)=",len(self.xval))
+        print("plot_analysis_data(): t=",t,", kdx=",kdx,", len(self.xval)=",len(self.xval))
 
         # if (t >= 0 and len(self.xval) > 1):
         # if (substrate_frame_num >= len(self.xval)):
         if (kdx >= len(self.xval)):
             pass
         elif (substrate_frame_num >= 0 and len(self.xval) > 1):
-            # print('self.xval=',self.xval)  # [   0.   60.  120. ...
+            print('   self.xval=',self.xval)  # [   0.   60.  120. ...
             if self.analysis_data_choice.value == 0:   # cells 1-3
                 # Chem A
                 self.ax1.plot(self.xval[kdx], self.yval1[kdx], p1[-1].get_color(), marker='o', markersize=12)

@@ -246,7 +246,8 @@ def run_done_func(s):
     # new results are available, so update dropdown
     # with debug_view:
     #     print('run_done_func: ---- before updating read_config.options')
-    read_config.options = get_config_files()
+    if False:  # for Colab
+        read_config.options = get_config_files()
     # with debug_view:
     #     print('run_done_func: ---- after updating read_config.options')
 
