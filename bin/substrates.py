@@ -646,7 +646,7 @@ class SubstrateTab(object):
     #---------------------------------------------------
     def update_dropdown_fields(self, data_dir):
         self.output_dir = data_dir
-        # print('!! update_dropdown_fields() called: self.output_dir = ', self.output_dir)
+        print('rwh: update_dropdown_fields() called: self.output_dir = ', self.output_dir)
         tree = None
         try:
             fname = os.path.join(self.output_dir, "initial.xml")
@@ -787,7 +787,7 @@ class SubstrateTab(object):
         if rdir:
             self.output_dir = rdir
 
-        # print('update(): self.output_dir = ', self.output_dir)
+        print('rwh update(): self.output_dir = ', self.output_dir)
 
         if self.first_time:
         # if True:
@@ -948,7 +948,7 @@ class SubstrateTab(object):
     # def update_analysis_data(self,b):
     def update_analysis_data(self):
         # print('----- update_analysis_data')
-        # print('update_analysis_data(): self.output_dir = ', self.output_dir)
+        print('rwh: update_analysis_data(): self.output_dir = ', self.output_dir)
 
         # If we've already computed the plots being requested, just return.
         # if ('live' in self.analysis_data_choice.value) and self.analysis_data_set1:
@@ -969,7 +969,7 @@ class SubstrateTab(object):
         cwd = os.getcwd()
         # print("----- cwd(1)=",cwd)
         data_dir = cwd
-        # print("----- data_dir(1)=",cwd)
+        print("----- data_dir(1)=",cwd)
 
         if 'cache' in self.output_dir:
             data_dir = self.output_dir
@@ -981,12 +981,13 @@ class SubstrateTab(object):
                 data_dir = os.path.abspath('tmpdir')
                 # print("----- data_dir(3)=",cwd)
 
+        print("----- rwh: data_dir=",data_dir)
         os.chdir(data_dir)
 
         xml_files = glob.glob('output*.xml')
         # xml_files = glob.glob(os.path.join('tmpdir', 'output*.xml'))
         xml_files.sort()
-        # print('update_analysis_data(): len(xml_files)=',len(xml_files))
+        print('update_analysis_data(): len(xml_files)=',len(xml_files))
         # print('xml_files = ',xml_files)
         # print("----- chdir back to cwd=",cwd)
         # os.chdir(cwd)
@@ -1014,7 +1015,7 @@ class SubstrateTab(object):
         if xname == self.tname:
             self.xval = tval
             # print("xname == self.tname")
-            # print("#1 self.xval=",self.xval)
+            print("#1 self.xval=",self.xval)
         else:
             print("Warning: xname != self.tname")
         voxel_size = mcds[0].data['mesh']['voxels']['volumes'][0]
@@ -1057,7 +1058,7 @@ class SubstrateTab(object):
         self.yval_tot3 = self.yval3 + self.yval_ext3
 
         # self.analysis_data_wait.value = ''
-        self.i_plot.update()
+        self.i_plot.update()  # rwh: debugging
 
     #------------------------------------------------------------
     # def plot_analysis_data_dummy(self):
@@ -1106,6 +1107,9 @@ class SubstrateTab(object):
             color_int = 'tab:red'
             color_ext = 'tab:blue'
             color_tot = 'tab:blue'
+            # print("   #0:  self.xval=",self.xval)
+            # print("   #0:  self.yval1=",self.yval1)
+            # print("   #0:  self.yval_ext1=",self.yval_ext1)
             # Chem A Plot
             p1 = self.ax1.plot(self.xval[1:], self.yval1[1:], label='int chem A', linewidth=3, color = color_int)
             p4 = self.ax1_extracellular.plot(self.xval[1:], self.yval_ext1[1:], label='ext chem A', linewidth=3, color = color_ext)
@@ -1158,14 +1162,14 @@ class SubstrateTab(object):
         # if (kdx >= len(self.xval)):
             # kdx = len(self.xval) - 1
         # print("plot_analysis_data(): t=",t,", kdx=",kdx,", len(self.xval)=",len(self.xval))
-        print("plot_analysis_data(): kdx=",kdx,", len(self.xval)=",len(self.xval))
+        # print("plot_analysis_data(): kdx=",kdx,", len(self.xval)=",len(self.xval))
 
         # if (t >= 0 and len(self.xval) > 1):
         # if (substrate_frame_num >= len(self.xval)):
         if (kdx >= len(self.xval)):
             pass
         elif (substrate_frame_num >= 0 and len(self.xval) > 1):
-            print('   self.xval=',self.xval)  # [   0.   60.  120. ...
+            # print('   self.xval=',self.xval)  # [   0.   60.  120. ...
             if self.analysis_data_choice.value == 0:   # cells 1-3
                 # Chem A
                 self.ax1.plot(self.xval[kdx], self.yval1[kdx], p1[-1].get_color(), marker='o', markersize=12)
@@ -1313,7 +1317,7 @@ class SubstrateTab(object):
             # print("plot_svg:", full_fname) 
         # print("-- plot_svg:", full_fname) 
         if not os.path.isfile(full_fname):
-            print("Once output files are generated, click the slider.")   
+            print("Once output files (.svg) are generated, click the slider.")   
             return
 
         xlist = deque()
@@ -1599,6 +1603,7 @@ class SubstrateTab(object):
             # fullname = output_dir_str + fname
 
     #        fullname = fname
+            self.output_dir = '.'  # rwh hack Aug 2024
             full_fname = os.path.join(self.output_dir, fname)
             # print("--- plot_substrate(): full_fname=",full_fname)
             full_xml_fname = os.path.join(self.output_dir, xml_fname)
@@ -1606,7 +1611,7 @@ class SubstrateTab(object):
 
     #        if not os.path.isfile(fullname):
             if not os.path.isfile(full_fname):
-                print("Once output files are generated, click the slider.")  # No:  output00000000_microenvironment0.mat
+                print("Once output files (.mat) are generated, click the slider.")  # No:  output00000000_microenvironment0.mat
                 return
 
     #        tree = ET.parse(xml_fname)
