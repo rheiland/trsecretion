@@ -386,7 +386,6 @@ else:
     if True:
         run_button = RunCommand(start_func=run_sim_func,
                             done_func=run_done_func,
-                            cachename='trsecretion',
                             showcache=False,
                             outcb=outcb)  
     else:
