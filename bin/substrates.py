@@ -1157,7 +1157,8 @@ class SubstrateTab(object):
         # kdx = len(self.xval) - 1
         # if (kdx >= len(self.xval)):
             # kdx = len(self.xval) - 1
-        print("plot_analysis_data(): t=",t,", kdx=",kdx,", len(self.xval)=",len(self.xval))
+        # print("plot_analysis_data(): t=",t,", kdx=",kdx,", len(self.xval)=",len(self.xval))
+        print("plot_analysis_data(): kdx=",kdx,", len(self.xval)=",len(self.xval))
 
         # if (t >= 0 and len(self.xval) > 1):
         # if (substrate_frame_num >= len(self.xval)):
