@@ -226,7 +226,10 @@ def fill_gui_params(config_file):
         cell_types_tab.fill_gui(xml_root)
 
 
-def run_done_func(s, rdir):
+# def run_done_func(s, rdir):
+def run_done_func(s):
+
+    rdir = 'tmpdir'  # rwh - hack for Colab
     # with debug_view:
     #     print('run_done_func: results in', rdir)
     
