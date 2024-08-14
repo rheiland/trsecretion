@@ -386,7 +386,6 @@ else:
     if True:
         run_button = RunCommand(start_func=run_sim_func,
                             done_func=run_done_func,
-                            showcache=False,
                             outcb=outcb)  
     else:
         run_button = widgets.Button(
@@ -424,7 +423,8 @@ homedir = os.getcwd()
 
 # tool_title = widgets.Label(r'\(\textbf{trsecretion}\)')
 tool_title = widgets.Label('trsecretion')
-if nanoHUB_flag or hublib_flag:
+# if nanoHUB_flag or hublib_flag:
+if False:
     # define this, but don't use (yet)
     remote_cb = widgets.Checkbox(indent=False, value=False, description='Submit as Batch Job to Clusters/Grid')
 
