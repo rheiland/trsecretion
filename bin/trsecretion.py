@@ -419,7 +419,8 @@ else:
 
 homedir = os.getcwd()
 
-tool_title = widgets.Label(r'\(\textbf{trsecretion}\)')
+# tool_title = widgets.Label(r'\(\textbf{trsecretion}\)')
+tool_title = widgets.Label('trsecretion')
 if nanoHUB_flag or hublib_flag:
     # define this, but don't use (yet)
     remote_cb = widgets.Checkbox(indent=False, value=False, description='Submit as Batch Job to Clusters/Grid')
