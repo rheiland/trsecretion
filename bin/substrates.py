@@ -1167,23 +1167,23 @@ class SubstrateTab(object):
             # print('self.xval=',self.xval)  # [   0.   60.  120. ...
             if self.analysis_data_choice.value == 0:   # cells 1-3
                 # Chem A
-                self.ax1.plot(self.xval[kdx+1], self.yval1[kdx+1], p1[-1].get_color(), marker='o', markersize=12)
+                self.ax1.plot(self.xval[kdx], self.yval1[kdx], p1[-1].get_color(), marker='o', markersize=12)
                 self.ax1.ticklabel_format(useOffset=False)
-                self.ax1_extracellular.plot(self.xval[kdx+1], self.yval_ext1[kdx+1], p4[-1].get_color(), marker='o', markersize=12)
-                self.ax1_extracellular.plot(self.xval[kdx+1], self.yval_tot1[kdx+1], p5[-1].get_color(), marker='o', markersize=12)
+                self.ax1_extracellular.plot(self.xval[kdx], self.yval_ext1[kdx], p4[-1].get_color(), marker='o', markersize=12)
+                self.ax1_extracellular.plot(self.xval[kdx], self.yval_tot1[kdx], p5[-1].get_color(), marker='o', markersize=12)
                 
                 # Chem B
-                self.ax2.plot(self.xval[kdx+1], self.yval2[kdx+1], p2[-1].get_color(), marker='o', markersize=12)
+                self.ax2.plot(self.xval[kdx], self.yval2[kdx], p2[-1].get_color(), marker='o', markersize=12)
                 self.ax2.ticklabel_format(useOffset=False)
-                self.ax2_extracellular.plot(self.xval[kdx+1], self.yval_ext2[kdx+1], p6[-1].get_color(), marker='o', markersize=12)
-                self.ax2_extracellular.plot(self.xval[kdx+1], self.yval_tot2[kdx+1], p7[-1].get_color(), marker='o', markersize=12)                
+                self.ax2_extracellular.plot(self.xval[kdx], self.yval_ext2[kdx], p6[-1].get_color(), marker='o', markersize=12)
+                self.ax2_extracellular.plot(self.xval[kdx], self.yval_tot2[kdx], p7[-1].get_color(), marker='o', markersize=12)                
                 
 
                 # Chem C
-                self.ax3.plot(self.xval[kdx+1], self.yval3[kdx+1], p3[-1].get_color(), marker='o', markersize=12)
+                self.ax3.plot(self.xval[kdx], self.yval3[kdx], p3[-1].get_color(), marker='o', markersize=12)
                 self.ax3.ticklabel_format(useOffset=False)
-                self.ax3_extracellular.plot(self.xval[kdx+1], self.yval_ext3[kdx+1], p8[-1].get_color(), marker='o', markersize=12)
-                self.ax3_extracellular.plot(self.xval[kdx+1], self.yval_tot3[kdx+1], p9[-1].get_color(), marker='o', markersize=12) 
+                self.ax3_extracellular.plot(self.xval[kdx], self.yval_ext3[kdx], p8[-1].get_color(), marker='o', markersize=12)
+                self.ax3_extracellular.plot(self.xval[kdx], self.yval_tot3[kdx], p9[-1].get_color(), marker='o', markersize=12) 
 
                 ymax= max(int(self.yval1.max()),int(self.yval2.max()),int(self.yval3.max())) 
                 yoff= ymax * .01   # should be a % of axes range
