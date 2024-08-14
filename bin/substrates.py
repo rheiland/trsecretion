@@ -1506,8 +1506,8 @@ class SubstrateTab(object):
         #         ytracks = self.trackd[key][:,1]
         #         plt.plot(xtracks[0:frame],ytracks[0:frame],  linewidth=5)
 
-        if self.colab_flag:
-            plt.show()
+        # if self.colab_flag:
+        #     plt.show()
 
 
 
