@@ -1757,5 +1757,5 @@ class SubstrateTab(object):
         else:
             self.plot_empty_analysis_data()
 
-        if self.colab_flag:
-            plt.show()
+        # if self.colab_flag:
+        #     plt.show()
